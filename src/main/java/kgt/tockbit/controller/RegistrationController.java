@@ -1,6 +1,6 @@
 package kgt.tockbit.controller;
 
-import kgt.tockbit.entity.User;
+import kgt.tockbit.domain.User;
 import kgt.tockbit.service.EmailService;
 import kgt.tockbit.service.UserService;
 import org.springframework.http.ResponseEntity;

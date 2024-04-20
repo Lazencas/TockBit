@@ -1,6 +1,6 @@
 package kgt.tockbit.service;
 
-import kgt.tockbit.entity.User;
+import kgt.tockbit.domain.User;
 import kgt.tockbit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

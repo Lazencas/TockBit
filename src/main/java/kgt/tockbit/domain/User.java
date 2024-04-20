@@ -1,4 +1,4 @@
-package kgt.tockbit.entity;
+package kgt.tockbit.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

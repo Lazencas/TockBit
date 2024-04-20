@@ -1,7 +1,7 @@
 package kgt.tockbit.repository;
 
 import jakarta.persistence.EntityManager;
-import kgt.tockbit.entity.User;
+import kgt.tockbit.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
