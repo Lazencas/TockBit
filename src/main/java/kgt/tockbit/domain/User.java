@@ -20,6 +20,17 @@ public class User {
     private String greet;
     //프로플이미지
     private byte[] image;
+
+    private boolean islogin;
+
+    public boolean isIslogin() {
+        return islogin;
+    }
+
+    public void setIslogin(boolean islogin) {
+        this.islogin = islogin;
+    }
+
     private boolean emailverified = false;
 
     public boolean isEmailverified() {
