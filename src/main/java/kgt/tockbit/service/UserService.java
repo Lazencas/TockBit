@@ -4,6 +4,7 @@ import kgt.tockbit.domain.User;
 import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.dto.loginResponseDto;
 import kgt.tockbit.dto.updateUserRequestDto;
+import kgt.tockbit.repository.MemoryUserRepository;
 import kgt.tockbit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-@Autowired
-    private UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    MemoryUserRepository userRepository = new MemoryUserRepository();
     /*
     이메일 인증을 이용한 회원가입
      */

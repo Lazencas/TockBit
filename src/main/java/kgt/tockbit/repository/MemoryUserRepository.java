@@ -50,4 +50,9 @@ public class MemoryUserRepository implements UserRepository{
     public void clearStore(){
         store.clear();
     }
+
+    @Override
+    public Optional<User> deleteByEmail(String email) {
+        return Optional.empty();
+    }
 }
