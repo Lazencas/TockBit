@@ -21,11 +21,11 @@ public class UserService {
     /*
     이메일 인증을 이용한 회원가입
      */
-    public Long join(User user) {
+    public String join(User user) {
         //같은 이메일 X
         vaildateDuplicateUser(user);
         userRepository.save(user);
-        return user.getId();
+        return user.getEmail();
     }
     private void vaildateDuplicateUser(User user) {
         userRepository.findByEmail(user.getEmail())
@@ -91,8 +91,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long userId) {
-        return  userRepository.findById(userId);
+    public Optional<User> findOne(String userEmail) {
+        return  userRepository.findByEmail(userEmail);
     }
 
 

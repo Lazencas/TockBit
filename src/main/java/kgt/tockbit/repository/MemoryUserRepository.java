@@ -22,7 +22,9 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        return store.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findAny();
     }
 
     @Override
