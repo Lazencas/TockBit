@@ -50,30 +50,42 @@ public class UserService {
     /*
     로그아웃
      */
-    public void logout(User user){
+    public ResponseEntity<String> logout(User user){
         userRepository.findByEmail(user.getEmail()).
                 ifPresent(foundUser -> {
                     foundUser.setIslogin(false);
                     userRepository.save(foundUser);
                 });
-
+        return new ResponseEntity<>("로그아웃 되었습니다.", HttpStatus.OK);
 
     }
     /*
     회원정보 수정
      */
-    public void updateUser(updateUserRequestDto user){
-        userRepository.findByEmail(user.get).
-                ifPresent(foundUser ->{
-                    foundUser.
-                });
+    public User updateUser(String email, updateUserRequestDto requestDto) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. email=" + email));
+        user.setName(requestDto.getName());
+        user.setGreet(requestDto.getGreet());
+        user.setImage(requestDto.getImage());
+        user.setPassword(requestDto.getPassword());
 
+        return userRepository.save(user);
     }
 
     /*
     회원탈퇴
      */
+    public ResponseEntity<String> deleteUser(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 사용자가 없습니다. email=" + email));
 
+        // 비밀번호 확인
+        if (!user.getPassword().equals(password)) {
+            return new ResponseEntity<>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
+        }
+
+        userRepository.deleteByEmail(email);
+        return new ResponseEntity<>("회원 탈퇴가 완료되었습니다.", HttpStatus.OK);
+    }
     /*
     전체 회원 조회
      */

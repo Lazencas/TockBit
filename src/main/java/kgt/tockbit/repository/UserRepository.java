@@ -14,6 +14,8 @@ public interface UserRepository {
     Optional<User> findByName(String name);
     Optional<User> updateById(Long id, String name, String greet, byte[] image, String password);
     Optional<User> deleteById(Long id);
+
+    Optional<User> deleteByEmail(String email);
     List<User> findAll();
 
 }
