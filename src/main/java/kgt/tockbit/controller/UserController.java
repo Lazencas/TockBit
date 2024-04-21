@@ -32,8 +32,6 @@ public class UserController {
         User user = new User();
         user.setEmail(form.getEmail());
 
-        System.out.println("user = "+ user.getEmail());
-
         userService.join(user);
 
         return "redirect:/";
