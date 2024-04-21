@@ -28,6 +28,7 @@ public class UserService {
     /*
         이메일 인증을 이용한 회원가입
          */
+
     public String join(User user) {
         //같은 이메일 X
         vaildateDuplicateUser(user);

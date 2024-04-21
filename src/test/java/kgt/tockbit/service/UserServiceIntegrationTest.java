@@ -28,9 +28,10 @@ class UserServiceIntegrationTest {
     void 회원가입() {
         //given
         User user = new User();
-        user.setName("user1");
-        user.setEmail("ab@ab.com");
+        user.setName("김건태");
+        user.setEmail("abcd@zab.com");
         user.setPassword("1234");
+        user.setGreet("헬로우");
 
         //when
        String saveEmail = userService.join(user);
