@@ -31,14 +31,14 @@ public class User {
         this.islogin = islogin;
     }
 
-    private boolean emailverified = false;
+    private boolean verified = false;
 
-    public boolean isEmailverified() {
-        return emailverified;
+    public boolean isVerified() {
+        return verified;
     }
 
-    public void setEmailverified(boolean emailverified) {
-        this.emailverified = emailverified;
+    public void setVerified(boolean emailverified) {
+        this.verified = emailverified;
     }
 
     public Long getId() {
