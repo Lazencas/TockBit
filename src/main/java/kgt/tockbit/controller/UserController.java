@@ -24,10 +24,12 @@ public class UserController {
         return "users/createUserForm";
     }
 
-    @PostMapping
+    @PostMapping("/auth/register")
     public String create(UserForm form){
         User user = new User();
         user.setEmail(form.getEmail());
+
+        System.out.println("user = "+ user.getEmail());
 
         userService.join(user);
 
