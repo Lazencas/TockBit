@@ -1,9 +1,11 @@
 package kgt.tockbit.repository;
 
 import kgt.tockbit.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class MemoryUserRepository implements UserRepository{
 
     private static Map<Long, User> store = new HashMap<>();
