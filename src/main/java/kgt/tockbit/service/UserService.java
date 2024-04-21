@@ -17,10 +17,15 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    MemoryUserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     /*
-    이메일 인증을 이용한 회원가입
-     */
+        이메일 인증을 이용한 회원가입
+         */
     public String join(User user) {
         //같은 이메일 X
         vaildateDuplicateUser(user);

@@ -5,6 +5,7 @@ import kgt.tockbit.repository.MemoryUserRepository;
 import kgt.tockbit.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -13,8 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
-    MemoryUserRepository userRepository = new MemoryUserRepository();
-    UserService userService = new UserService();
+    UserService userService;
+    MemoryUserRepository userRepository;
+    @BeforeEach
+    public void beforeEach(){
+        userRepository = new MemoryUserRepository();
+        userService = new UserService(userRepository);
+    }
+
     @AfterEach
     public void afterEach(){
         userRepository.clearStore();
