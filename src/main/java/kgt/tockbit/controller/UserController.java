@@ -7,6 +7,8 @@ import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -114,7 +116,6 @@ public class UserController {
     @GetMapping("/create-cookie")
     public String createCookie(HttpServletResponse res) {
         addCookie("Robbie Auth", res);
-
         return "createCookie";
     }
 
@@ -171,12 +172,11 @@ public class UserController {
         }
     }
 
-
-
-
-
-
-
+    @GetMapping("/sendEmail")
+    public ResponseEntity<String> sendEmail(@RequestParam String toEmail){
+        userService.sendToEmail(toEmail);
+        return ResponseEntity.ok("이메일 전송 성공!");
+    }
 
 
 

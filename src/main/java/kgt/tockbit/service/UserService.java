@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,9 @@ public class UserService {
     private final UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService mailService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -122,6 +126,12 @@ public class UserService {
 
     public Optional<User> findOne(String userEmail) {
         return  userRepository.findByEmail(userEmail);
+    }
+
+    public void sendToEmail(String toEmail) {
+        String title = "Travel with me 이메일 인증 번호";
+        String authCode = "안냐때염";
+        mailService.sendEmail(toEmail, title, authCode);
     }
 
 
