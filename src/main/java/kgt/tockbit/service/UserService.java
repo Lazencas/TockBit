@@ -1,9 +1,11 @@
 package kgt.tockbit.service;
 
+import jakarta.servlet.http.HttpServletResponse;
 import kgt.tockbit.domain.User;
 import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.dto.loginResponseDto;
 import kgt.tockbit.dto.updateUserRequestDto;
+import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.repository.MemoryUserRepository;
 import kgt.tockbit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -48,9 +52,21 @@ public class UserService {
     /*
     JWT토큰을 이용한 로그인
      */
-    public ResponseEntity login(loginRequestDto loginRequestDto){
+    public ResponseEntity login(loginRequestDto loginRequestDto, HttpServletResponse res){
     String email = loginRequestDto.getEmail();
     String password = loginRequestDto.getPassword();
+        //사용자확인
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+        //비밀번호 확인
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        //인증된 사용자에게 JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
+        String token = jwtUtil.createToken(user.getEmail());
+        jwtUtil.addJwtToCookie(token, res);
+
         String responseBody = "Hello, World!";
     return ResponseEntity.ok(responseBody);
     }

@@ -3,6 +3,7 @@ package kgt.tockbit.config;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kgt.tockbit.controller.UserController;
+import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.repository.JpaUserRepository;
 import kgt.tockbit.repository.MemoryUserRepository;
 import kgt.tockbit.repository.UserRepository;
@@ -46,4 +47,7 @@ public class SpringConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
+
 }

@@ -2,6 +2,7 @@ package kgt.tockbit.controller;
 
 import io.jsonwebtoken.Claims;
 import kgt.tockbit.domain.User;
+import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +67,19 @@ public class UserController {
         return "users/login";
     }
 
-    @GetMapping("/user/signup")
-    public String signupPage() {
-        return "signup";
+    @PostMapping("/auth/login")
+    public String login(loginRequestDto requestDto, HttpServletResponse res){
+        try {
+            userService.login(requestDto, res);
+        } catch (Exception e) {
+            return "redirect:/auth/login?error";
+        }
+        return "users/home";
+
     }
+
+
+
 
 
     @GetMapping("/create-cookie")
