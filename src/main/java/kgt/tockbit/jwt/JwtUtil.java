@@ -102,6 +102,13 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
+    public void clearCookie(HttpServletResponse res, String cookieName){
+        Cookie cookie = new Cookie("Authorization", "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        res.addCookie(cookie);
+    }
+
 
 
 }

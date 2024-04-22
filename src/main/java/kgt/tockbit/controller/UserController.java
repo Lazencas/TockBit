@@ -87,6 +87,26 @@ public class UserController {
 
     }
 
+    @GetMapping("/auth/logout")
+    public String logout(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue, HttpServletResponse response) {
+        // JWT 토큰 substring
+        String token = jwtUtil.substringToken(tokenValue);
+
+        // 토큰 검증
+        if(!jwtUtil.validateToken(token)){
+            throw new IllegalArgumentException("Token Error");
+        }
+
+        // 토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        // 사용자 email
+        String email = info.getSubject();
+        userService.logout(email);
+        jwtUtil.clearCookie(response,"Authorization");
+
+
+        return "users/login";
+    }
 
 
 
@@ -98,6 +118,7 @@ public class UserController {
         return "createCookie";
     }
 
+    @ResponseBody
     @GetMapping("/get-cookie")
     public String getCookie(@CookieValue(AUTHORIZATION_HEADER) String value) {
         System.out.println("value = " + value);
@@ -115,7 +136,7 @@ public class UserController {
 
         return "createJwt : " + token;
     }
-
+    @ResponseBody
     @GetMapping("/get-jwt")
     public String getJwt(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue) {
         // JWT 토큰 substring
@@ -131,11 +152,8 @@ public class UserController {
         // 사용자 username
         String username = info.getSubject();
         System.out.println("username = " + username);
-        // 사용자 권한
-        String authority = (String) info.get(JwtUtil.AUTHORIZATION_KEY);
-        System.out.println("authority = " + authority);
 
-        return "getJwt : " + username + ", " + authority;
+        return "getJwt : " + username;
     }
 
     public static void addCookie(String cookieValue, HttpServletResponse res) {
@@ -152,6 +170,8 @@ public class UserController {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
 
 
 
