@@ -9,6 +9,7 @@ import kgt.tockbit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,18 +21,20 @@ import java.util.Optional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     /*
         이메일 인증을 이용한 회원가입
          */
-
     public String join(User user) {
         //같은 이메일 X
         vaildateDuplicateUser(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return user.getEmail();
     }
