@@ -1,11 +1,13 @@
 package kgt.tockbit.controller;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class UserForm {
     private String email;
     private String password;
     private String name;
     private String greet;
-    private byte[] image;
+    private MultipartFile image;
 
     public String getPassword() {
         return password;
@@ -31,14 +33,6 @@ public class UserForm {
         this.greet = greet;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -47,5 +41,11 @@ public class UserForm {
         this.email = email;
     }
 
+    public MultipartFile getImage() {
+        return image;
+    }
 
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
 }

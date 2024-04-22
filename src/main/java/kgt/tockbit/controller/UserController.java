@@ -1,6 +1,7 @@
 package kgt.tockbit.controller;
 
 import io.jsonwebtoken.Claims;
+import jakarta.mail.Multipart;
 import kgt.tockbit.domain.User;
 import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.jwt.JwtUtil;
@@ -8,12 +9,13 @@ import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.Base64;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -42,12 +44,19 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public String create(UserForm form){
+    public String create(UserForm form, @RequestParam("image")MultipartFile multipartFile) throws IOException {
         User user = new User();
         user.setEmail(form.getEmail());
         user.setName(form.getName());
         user.setPassword(form.getPassword());
         user.setGreet(form.getGreet());
+
+
+        // 이미지를 Base64로 인코딩하여 문자열로 변환
+        byte[] imageBytes = multipartFile.getBytes();
+        String imageString = Base64.getEncoder().encodeToString(imageBytes);
+        user.setImage(imageString);
+
 
         userService.join(user);
 
