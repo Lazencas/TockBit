@@ -128,10 +128,20 @@ public class UserService {
         return  userRepository.findByEmail(userEmail);
     }
 
-    public void sendToEmail(String toEmail) {
-        String title = "Travel with me 이메일 인증 번호";
-        String authCode = "안냐때염";
+    public void sendToEmail(String toEmail, String confirmurl) {
+        String title = "탁빝 이메일 회원가입 확인";
+        String authCode = "다음 링크를 클릭하여 회원가입을 완료하세요: " + confirmurl;
         mailService.sendEmail(toEmail, title, authCode);
+    }
+
+    public String verified(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(
+                ()-> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+        //인증정보 db에 넣기
+        user.setVerified(true);
+        userRepository.save(user);
+        return "users/home";
     }
 
 

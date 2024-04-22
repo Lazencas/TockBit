@@ -30,6 +30,8 @@ public class UserController {
 
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    public static final String siteURL = "localhost:8080";
     private final UserService userService;
 
     private final JwtUtil jwtUtil;
@@ -110,9 +112,6 @@ public class UserController {
         return "users/login";
     }
 
-
-
-
     @GetMapping("/create-cookie")
     public String createCookie(HttpServletResponse res) {
         addCookie("Robbie Auth", res);
@@ -174,8 +173,39 @@ public class UserController {
 
     @GetMapping("/sendEmail")
     public ResponseEntity<String> sendEmail(@RequestParam String toEmail){
-        userService.sendToEmail(toEmail);
+        //JWT생성
+        String token = jwtUtil.createToken(toEmail);
+//        token = jwtUtil.substringToken(token);
+
+        //이메일에 포함될 링크 생성
+        String comfirmURI = siteURL + "/confirm?token=" + token;
+
+        //이메일 보내기
+        userService.sendToEmail(toEmail,comfirmURI);
         return ResponseEntity.ok("이메일 전송 성공!");
+    }
+
+    @GetMapping("confirm")
+    public String confirm(@RequestParam("token") String tokenValue) {
+        //JWT토큰 자르기
+        String token = jwtUtil.substringToken(tokenValue);
+
+        //토큰검증
+        if (!jwtUtil.validateToken(token)) {
+            throw new IllegalArgumentException("토큰오류");
+        }
+
+        //토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        //사용자 email
+        String email = info.getSubject();
+
+        //사용자 활성화
+        String result = "";
+        result = userService.verified(email);
+
+        return result;
+
     }
 
 
