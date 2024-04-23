@@ -5,7 +5,22 @@
     <title>로그인에 성공한 홈페이지</title>
 </head>
 <body>
-어서오세요! 환영합니다.
+어서오세요! 환영합니다. 이름, 프로필이미지, 인사말, 비밀번호를 변경 가능합니다.
 
+<div class="container">
+    <form action="/profile" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+            <label for="greet">인사말</label>
+            <input type="text" id="greet" name="greet" placeholder="인사말을 입력하세요">
+            <label for="image">프로필 이미지</label>
+            <input type="file" id="image" name="image" accept="image/*" placeholder="프로필 이미지를 올려주세요">
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</div> <!-- /container -->
 </body>
 </html>

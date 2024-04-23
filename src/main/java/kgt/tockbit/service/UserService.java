@@ -92,14 +92,23 @@ public class UserService {
     /*
     회원정보 수정
      */
-    public User updateUser(String email, updateUserRequestDto requestDto) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. email=" + email));
-        user.setName(requestDto.getName());
-        user.setGreet(requestDto.getGreet());
-        user.setImage(requestDto.getImage());
-        user.setPassword(requestDto.getPassword());
-
-        return userRepository.save(user);
+    public User updateUser(User user) {
+        userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. email=" + user.getEmail()));
+        //사용자가 수정할 필드만 업데이트
+//        if (user.getPassword() != null && !user.getPassword().isEmpty()){
+//            preuser.setPassword(passwordEncoder.encode(user.getPassword()));
+//        }
+//        if (user.getName() != null && !user.getName().isEmpty()){
+//            preuser.setName(user.getName());
+//        }
+//        if (user.getGreet() != null && !user.getGreet().isEmpty()){
+//            preuser.setGreet(user.getGreet());
+//        }
+//        if (user.getImage() != null && !user.getImage().isEmpty()){
+//            preuser.setImage(user.getImage());
+//        }
+        userRepository.save(user);
+        return user;
     }
 
     /*
@@ -130,7 +139,7 @@ public class UserService {
 
     public void sendToEmail(String toEmail, String confirmurl) {
         String title = "탁빝 이메일 회원가입 확인";
-        String authCode = "다음 링크를 클릭하여 회원가입을 완료하세요: " + confirmurl;
+        String authCode = "다음 링크를 주소창에 복사-붙여넣기 하세요: " + confirmurl;
         mailService.sendEmail(toEmail, title, authCode);
     }
 

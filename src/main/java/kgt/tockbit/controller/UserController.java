@@ -9,6 +9,7 @@ import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,9 @@ public class UserController {
     public static final String siteURL = "localhost:8080";
     private final UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private final JwtUtil jwtUtil;
 
     @Autowired
@@ -54,18 +58,44 @@ public class UserController {
         user.setName(form.getName());
         user.setPassword(form.getPassword());
         user.setGreet(form.getGreet());
-
-
         // 이미지를 Base64로 인코딩하여 문자열로 변환
         byte[] imageBytes = multipartFile.getBytes();
         String imageString = Base64.getEncoder().encodeToString(imageBytes);
         user.setImage(imageString);
-
-
         userService.join(user);
-
         return "redirect:/";
     }
+
+    @PostMapping("/profile")
+    public String update(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue ,UserForm form,@RequestParam("image")MultipartFile multipartFile) throws IOException {
+        String token = jwtUtil.substringToken(tokenValue);
+        if(!jwtUtil.validateToken(token)){
+            throw new IllegalArgumentException("프로필 토큰 에러");
+        }
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        String email = info.getSubject();
+        User user = userService.findOne(email).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+        System.out.println("이거 찍힘?"+ form.getName());
+        if (form.getPassword() != null && !form.getPassword().isEmpty()){
+            user.setPassword(passwordEncoder.encode(form.getPassword()));
+        }
+        if (form.getName() != null && !form.getName().isEmpty()){
+            user.setName(form.getName());
+        }
+        if (form.getGreet() != null && !form.getGreet().isEmpty()){
+            user.setGreet(form.getGreet());
+        }
+        if (!multipartFile.isEmpty()){            // 이미지 파일을 byte 배열로 변환
+            byte[] imageBytes = multipartFile.getBytes();
+            user.setImage(Base64.getEncoder().encodeToString(imageBytes));
+        }
+        userService.updateUser(user);
+        return "users/home";
+    }
+
+
 
     @GetMapping("/users")
     public String list(Model model){
@@ -107,8 +137,6 @@ public class UserController {
         String email = info.getSubject();
         userService.logout(email);
         jwtUtil.clearCookie(response,"Authorization");
-
-
         return "users/login";
     }
 
@@ -152,7 +180,6 @@ public class UserController {
         // 사용자 username
         String username = info.getSubject();
         System.out.println("username = " + username);
-
         return "getJwt : " + username;
     }
 
@@ -176,7 +203,6 @@ public class UserController {
         //JWT생성
         String token = jwtUtil.createToken(toEmail);
 //        token = jwtUtil.substringToken(token);
-
         //이메일에 포함될 링크 생성
         String comfirmURI = siteURL + "/confirm?token=" + token;
 
@@ -205,7 +231,6 @@ public class UserController {
         result = userService.verified(email);
 
         return result;
-
     }
 
 
