@@ -3,7 +3,7 @@ package kgt.tockbit.dto;
 public class updateUserRequestDto {
     private String name;
     private String greet;
-    private byte[] image;
+    private String image;
     private String password;
 
     public String getName() {
@@ -22,11 +22,11 @@ public class updateUserRequestDto {
         this.greet = greet;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

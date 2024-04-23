@@ -1,13 +1,27 @@
 package kgt.tockbit.controller;
 
+import io.jsonwebtoken.Claims;
+import jakarta.mail.Multipart;
 import kgt.tockbit.domain.User;
+import kgt.tockbit.dto.loginRequestDto;
+import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.Base64;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 
 import java.util.List;
 
@@ -15,11 +29,21 @@ import java.util.List;
 //@RequestMapping("/api")
 public class UserController {
 
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    public static final String siteURL = "localhost:8080";
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    private PasswordEncoder passwordEncoder;
+
+    private final JwtUtil jwtUtil;
+
+    @Autowired
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/auth/register")
@@ -28,17 +52,50 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public String create(UserForm form){
+    public String create(UserForm form, @RequestParam("image")MultipartFile multipartFile) throws IOException {
         User user = new User();
         user.setEmail(form.getEmail());
         user.setName(form.getName());
         user.setPassword(form.getPassword());
         user.setGreet(form.getGreet());
-
+        // 이미지를 Base64로 인코딩하여 문자열로 변환
+        byte[] imageBytes = multipartFile.getBytes();
+        String imageString = Base64.getEncoder().encodeToString(imageBytes);
+        user.setImage(imageString);
         userService.join(user);
-
         return "redirect:/";
     }
+
+    @PostMapping("/profile")
+    public String update(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue ,UserForm form,@RequestParam("image")MultipartFile multipartFile) throws IOException {
+        String token = jwtUtil.substringToken(tokenValue);
+        if(!jwtUtil.validateToken(token)){
+            throw new IllegalArgumentException("프로필 토큰 에러");
+        }
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        String email = info.getSubject();
+        User user = userService.findOne(email).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+        System.out.println("이거 찍힘?"+ form.getName());
+        if (form.getPassword() != null && !form.getPassword().isEmpty()){
+            user.setPassword(passwordEncoder.encode(form.getPassword()));
+        }
+        if (form.getName() != null && !form.getName().isEmpty()){
+            user.setName(form.getName());
+        }
+        if (form.getGreet() != null && !form.getGreet().isEmpty()){
+            user.setGreet(form.getGreet());
+        }
+        if (!multipartFile.isEmpty()){            // 이미지 파일을 byte 배열로 변환
+            byte[] imageBytes = multipartFile.getBytes();
+            user.setImage(Base64.getEncoder().encodeToString(imageBytes));
+        }
+        userService.updateUser(user);
+        return "users/home";
+    }
+
+
 
     @GetMapping("/users")
     public String list(Model model){
@@ -48,13 +105,137 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/login-page")
+    @GetMapping("/auth/login")
     public String loginPage() {
-        return "login";
+        return "users/login";
     }
 
-    @GetMapping("/user/signup")
-    public String signupPage() {
-        return "signup";
+    @PostMapping("/auth/login")
+    public String login(loginRequestDto requestDto, HttpServletResponse res){
+        try {
+            userService.login(requestDto, res);
+        } catch (Exception e) {
+            return "redirect:/auth/login?error";
+        }
+        return "users/home";
+
     }
+
+    @GetMapping("/auth/logout")
+    public String logout(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue, HttpServletResponse response) {
+        // JWT 토큰 substring
+        String token = jwtUtil.substringToken(tokenValue);
+
+        // 토큰 검증
+        if(!jwtUtil.validateToken(token)){
+            throw new IllegalArgumentException("Token Error");
+        }
+
+        // 토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        // 사용자 email
+        String email = info.getSubject();
+        userService.logout(email);
+        jwtUtil.clearCookie(response,"Authorization");
+        return "users/login";
+    }
+
+    @GetMapping("/create-cookie")
+    public String createCookie(HttpServletResponse res) {
+        addCookie("Robbie Auth", res);
+        return "createCookie";
+    }
+
+    @ResponseBody
+    @GetMapping("/get-cookie")
+    public String getCookie(@CookieValue(AUTHORIZATION_HEADER) String value) {
+        System.out.println("value = " + value);
+
+        return "getCookie : " + value;
+    }
+
+    @GetMapping("/create-jwt")
+    public String createJwt(HttpServletResponse res) {
+        // Jwt 생성
+        String token = jwtUtil.createToken("Robbie");
+
+        // Jwt 쿠키 저장
+        jwtUtil.addJwtToCookie(token, res);
+
+        return "createJwt : " + token;
+    }
+    @ResponseBody
+    @GetMapping("/get-jwt")
+    public String getJwt(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue) {
+        // JWT 토큰 substring
+        String token = jwtUtil.substringToken(tokenValue);
+
+        // 토큰 검증
+        if(!jwtUtil.validateToken(token)){
+            throw new IllegalArgumentException("Token Error");
+        }
+
+        // 토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        // 사용자 username
+        String username = info.getSubject();
+        System.out.println("username = " + username);
+        return "getJwt : " + username;
+    }
+
+    public static void addCookie(String cookieValue, HttpServletResponse res) {
+        try {
+            cookieValue = URLEncoder.encode(cookieValue, "utf-8").replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
+
+            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, cookieValue); // Name-Value
+            cookie.setPath("/");
+            cookie.setMaxAge(30 * 60);
+
+            // Response 객체에 Cookie 추가
+            res.addCookie(cookie);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @GetMapping("/sendEmail")
+    public ResponseEntity<String> sendEmail(@RequestParam String toEmail){
+        //JWT생성
+        String token = jwtUtil.createToken(toEmail);
+//        token = jwtUtil.substringToken(token);
+        //이메일에 포함될 링크 생성
+        String comfirmURI = siteURL + "/confirm?token=" + token;
+
+        //이메일 보내기
+        userService.sendToEmail(toEmail,comfirmURI);
+        return ResponseEntity.ok("이메일 전송 성공!");
+    }
+
+    @GetMapping("confirm")
+    public String confirm(@RequestParam("token") String tokenValue) {
+        //JWT토큰 자르기
+        String token = jwtUtil.substringToken(tokenValue);
+
+        //토큰검증
+        if (!jwtUtil.validateToken(token)) {
+            throw new IllegalArgumentException("토큰오류");
+        }
+
+        //토큰에서 사용자 정보 가져오기
+        Claims info = jwtUtil.getUserInfoFromToken(token);
+        //사용자 email
+        String email = info.getSubject();
+
+        //사용자 활성화
+        String result = "";
+        result = userService.verified(email);
+
+        return result;
+    }
+
+
+
+
+
+
 }

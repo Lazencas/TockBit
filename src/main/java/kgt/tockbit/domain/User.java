@@ -19,7 +19,7 @@ public class User {
     //인사말
     private String greet;
     //프로플이미지
-    private byte[] image;
+    private String image;
 
     private boolean islogin;
 
@@ -81,11 +81,11 @@ public class User {
         this.greet = greet;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }
