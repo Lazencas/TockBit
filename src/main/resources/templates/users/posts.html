@@ -15,6 +15,11 @@
         <td th:text="${post.id}"></td>
         <td th:text="${post.title}"></td>
         <td th:text="${post.content}"></td>
+        <td>
+          <ul>
+            <li th:each="comment : ${post.comments}" th:text="${comment.content}"></li>
+          </ul>
+        </td>
       </tr>
       </tbody>
     </table>

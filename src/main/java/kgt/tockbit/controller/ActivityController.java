@@ -65,6 +65,13 @@ public class ActivityController {
         model.addAttribute("posts", posts);
         return "users/posts";
     }
+    @ResponseBody
+    @GetMapping("/activity/post/{post_id}/comment")
+    public String createComment(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue,@PathVariable("post_id") Long post_id, @RequestParam("con") String content){
+        String email = bringme_email_jwt(tokenValue);
+        activityService.createComment(email,post_id,content);
+        return "success";
+    }
 
 
 

@@ -1,8 +1,10 @@
 package kgt.tockbit.service;
 
+import kgt.tockbit.domain.Comment;
 import kgt.tockbit.domain.Follow;
 import kgt.tockbit.domain.Post;
 import kgt.tockbit.domain.User;
+import kgt.tockbit.repository.CommentRepository;
 import kgt.tockbit.repository.JpaFollowRepository;
 import kgt.tockbit.repository.PostRepository;
 import kgt.tockbit.repository.UserRepository;
@@ -18,13 +20,14 @@ import java.util.Optional;
 public class ActivityService {
 private final JpaFollowRepository followRepository;
 private final UserRepository userRepository;
-
+private final CommentRepository commentRepository;
 private final PostRepository postRepository;
 
     @Autowired
-    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, PostRepository postRepository) {
+    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
         this.postRepository = postRepository;
     }
 
@@ -51,8 +54,28 @@ private final PostRepository postRepository;
         postRepository.save(post);
     }
 
+    //댓글 작성
+    public void createComment(String email, Long post_id, String content){
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("해당 사용자가 없습니다.")
+        );
+        Post post = postRepository.findById(post_id).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시물이 없습니다.")
+        );
+        Comment comment = new Comment();
+        comment.setUser(user);
+        comment.setPost(post);
+        comment.setContent(content);
+        commentRepository.save(comment);
+    }
+
+
     public List<Post> findAll(){
         return postRepository.findAll();
+    }
+
+    public List<Comment> findcommentsAll(){
+        return commentRepository.findAll();
     }
 
     public boolean likePost(Long post_id){
