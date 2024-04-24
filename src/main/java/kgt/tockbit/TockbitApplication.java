@@ -10,5 +10,4 @@ public class TockbitApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TockbitApplication.class, args);
 	}
-
 }
