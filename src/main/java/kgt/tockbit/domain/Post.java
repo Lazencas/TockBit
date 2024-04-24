@@ -28,12 +28,22 @@ public class Post {
     @Column(nullable = false)
     private Timestamp createdAt;
 
+    private Long likes;
+
 
     @PrePersist
     public void prePersist(){
         this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.likes = 0L;
     }
 
+    public Long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Long like) {
+        this.likes = like;
+    }
 
     public Long getId() {
         return id;

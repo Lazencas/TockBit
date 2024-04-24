@@ -24,9 +24,20 @@ public class Comment {
     @Column(nullable = false)
     private Timestamp createdAt;
 
+    private Long likes;
+
+    public Long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Long like) {
+        this.likes = like;
+    }
+
     @PrePersist
     public void prePersist(){
         this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.likes = 0L;
     }
     public Long getId() {
         return id;

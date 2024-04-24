@@ -71,7 +71,6 @@ public class UserService {
         String responseBody = "Hello, World!";
     return ResponseEntity.ok(responseBody);
     }
-
     /*
     로그아웃
      */
@@ -89,19 +88,6 @@ public class UserService {
      */
     public User updateUser(User user) {
         userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. email=" + user.getEmail()));
-        //사용자가 수정할 필드만 업데이트
-//        if (user.getPassword() != null && !user.getPassword().isEmpty()){
-//            preuser.setPassword(passwordEncoder.encode(user.getPassword()));
-//        }
-//        if (user.getName() != null && !user.getName().isEmpty()){
-//            preuser.setName(user.getName());
-//        }
-//        if (user.getGreet() != null && !user.getGreet().isEmpty()){
-//            preuser.setGreet(user.getGreet());
-//        }
-//        if (user.getImage() != null && !user.getImage().isEmpty()){
-//            preuser.setImage(user.getImage());
-//        }
         userRepository.save(user);
         return user;
     }
@@ -123,7 +109,6 @@ public class UserService {
     /*
     전체 회원 조회
      */
-
     public List<User> findUsers() {
         return userRepository.findAll();
     }
@@ -148,9 +133,4 @@ public class UserService {
         return "users/home";
     }
 
-
-//    public User findByToken(String token) {
-//        // 토큰으로 사용자를 찾는 로직을 구현합니다.
-//        // 이 예시에서는 토큰을 데이터베이스에 저장하고, 이메일 인증 시 사용한다고 가정했습니다.
-//    }
 }
