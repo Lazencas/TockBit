@@ -20,5 +20,41 @@ public class Follow {
 
     private Timestamp createdAt;
 
-    // 생성자, getter 및 setter 생략
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getFollower() {
+        return follower;
+    }
+
+    public void setFollower(User follower) {
+        this.follower = follower;
+    }
+
+    public User getFollowedUser() {
+        return followedUser;
+    }
+
+    public void setFollowedUser(User followedUser) {
+        this.followedUser = followedUser;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
 }

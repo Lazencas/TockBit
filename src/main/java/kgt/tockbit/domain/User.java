@@ -1,16 +1,14 @@
 package kgt.tockbit.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.sql.Timestamp;
 
 @Entity
 public class User {
-    //사용자 고유 id
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     //사용자 이메일
+    @Id
+    @Column(unique = true)
     private  String email;
     //사용자의 암호화 된 비밀번호
     private String password;
@@ -22,6 +20,22 @@ public class User {
     private String image;
 
     private boolean islogin;
+
+    @Column(nullable = false)
+    private Timestamp join_data;
+
+    public Timestamp getJoin_data() {
+        return join_data;
+    }
+
+    @PrePersist
+    public void prePersist(){
+        this.join_data = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setJoin_data(Timestamp join_data) {
+        this.join_data = join_data;
+    }
 
     public boolean isIslogin() {
         return islogin;
@@ -39,14 +53,6 @@ public class User {
 
     public void setVerified(boolean emailverified) {
         this.verified = emailverified;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
