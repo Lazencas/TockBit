@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +49,10 @@ private final PostRepository postRepository;
         post.setTitle(title);
         post.setContent(content);
         postRepository.save(post);
+    }
+
+    public List<Post> findAll(){
+        return postRepository.findAll();
     }
 
     public boolean likePost(Long post_id){

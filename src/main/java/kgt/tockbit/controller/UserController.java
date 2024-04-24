@@ -91,15 +91,12 @@ public class UserController {
         return "users/home";
     }
 
-
-
     @GetMapping("/users")
     public String list(Model model){
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "users/userList";
     }
-
 
     @GetMapping("/auth/login")
     public String loginPage() {
