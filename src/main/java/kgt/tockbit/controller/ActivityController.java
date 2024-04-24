@@ -46,6 +46,21 @@ public class ActivityController {
         activityService.createPost(email,title, content);
         return "redirect:/activity/post";
     }
+    @ResponseBody
+    @GetMapping("/activity/post/{post_id}/like")
+    public ResponseEntity<String> likePost(@PathVariable("post_id") Long post_id){
+        boolean success = activityService.likePost(post_id);
+        if(success){
+            return ResponseEntity.ok("게시물에 좋아요가 추가되었습니다!");
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물을 찾을 수 없습니다.");
+        }
+    }
+
+
+
+
+
 
 
 

@@ -16,7 +16,33 @@
             </textarea>
         </div>
         <button type="submit">등록</button>
+        <button class="like-button" onclick="likePost()">Like</button>
+        <span id="like-count">0</span> Likes
     </form>
 </div> <!-- /container -->
+<script>
+    function likePost() {
+        var postId = "your_post_id_here"; // 좋아요를 추가할 포스트의 ID를 여기에 입력하세요
+        var data = { postId: postId };
+
+        fetch('/activity/like', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to like the post');
+                }
+                alert('Liked successfully');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to like the post');
+            });
+    }
+</script>
 </body>
 </html>

@@ -48,7 +48,15 @@ private final PostRepository postRepository;
         post.setTitle(title);
         post.setContent(content);
         postRepository.save(post);
+    }
 
+    public boolean likePost(Long post_id){
+        Post post = postRepository.findById(post_id).orElseThrow(
+                () -> new IllegalArgumentException("해당 포스트가 존재 하지 않습니다.")
+        );
+        post.setLikes(post.getLikes()+1);
+        postRepository.save(post);
+        return true;
     }
 
 
