@@ -3,10 +3,7 @@ package kgt.tockbit.service;
 import jakarta.servlet.http.HttpServletResponse;
 import kgt.tockbit.domain.User;
 import kgt.tockbit.dto.loginRequestDto;
-import kgt.tockbit.dto.loginResponseDto;
-import kgt.tockbit.dto.updateUserRequestDto;
 import kgt.tockbit.jwt.JwtUtil;
-import kgt.tockbit.repository.MemoryUserRepository;
 import kgt.tockbit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
