@@ -1,28 +1,24 @@
 package kgt.tockbit.controller;
 
 import io.jsonwebtoken.Claims;
-import jakarta.mail.Multipart;
+import jakarta.servlet.http.HttpServletResponse;
 import kgt.tockbit.domain.User;
 import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.Base64;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
-
 import java.util.List;
 
 @Controller
@@ -155,7 +151,6 @@ public class UserController {
         jwtUtil.clearCookie(response,"Authorization");
         return "users/login";
     }
-
 
 
     @GetMapping("/sendEmail")
