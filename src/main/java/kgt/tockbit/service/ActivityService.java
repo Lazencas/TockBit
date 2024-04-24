@@ -87,6 +87,16 @@ private final PostRepository postRepository;
         return true;
     }
 
+    public boolean likeComment(Long comment_id){
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 존재 하지 않습니다.")
+        );
+        comment.setLikes(comment.getLikes()+1);
+        commentRepository.save(comment);
+        return true;
+    }
+
+
 
 
 

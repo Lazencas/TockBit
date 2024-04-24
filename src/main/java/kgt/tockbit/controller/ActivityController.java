@@ -59,6 +59,18 @@ public class ActivityController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물을 찾을 수 없습니다.");
         }
     }
+    @ResponseBody
+    @GetMapping("/activity/comment/{comment_id}/like")
+    public ResponseEntity<String> likeComment(@PathVariable("comment_id") Long comment_id){
+        boolean success = activityService.likeComment(comment_id);
+        if(success){
+            return ResponseEntity.ok("댓글에 좋아요가 추가되었습니다!");
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글을 찾을 수 없습니다.");
+        }
+    }
+
+
     @GetMapping("/activity/posts")
     public String showPosts(Model model){
         List<Post> posts = activityService.findAll();

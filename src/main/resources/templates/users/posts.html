@@ -15,9 +15,12 @@
         <td th:text="${post.id}"></td>
         <td th:text="${post.title}"></td>
         <td th:text="${post.content}"></td>
+        <td th:text="'Likes: '+${post.likes}"></td>
         <td>
           <ul>
-            <li th:each="comment : ${post.comments}" th:text="${comment.content}"></li>
+            <li th:each="comment : ${post.comments}">
+              <span th:text="${comment.content}"></span>
+              <span th:text="'Likes: ' + ${comment.likes}"></span></li>
           </ul>
         </td>
       </tr>
