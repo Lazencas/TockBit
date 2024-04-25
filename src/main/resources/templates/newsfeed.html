@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>News Feed</title>
+</head>
+<body>
+<h1>News Feed</h1>
+<div th:each="activity : ${activities}">
+    <h2 th:text="${activity.user.name}"></h2>
+    <p th:text="${activity.type}"></p>
+    <small th:text="${#dates.format(activity.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+    <div th:if="${activity.type == 'PLIKE'}">
+        <p><strong>게시글 좋아요</strong></p>
+    </div>
+    <div th:if="${activity.type == 'CLIKE'}">
+        <p><strong>댓글 좋아요</strong></p>
+    </div>
+    <div th:if="${activity.type == 'FOLLOW'}">
+        <p th:text="${activity.user}+'님이'"></p>
+        <p th:text="${activity.follower}+'님을 팔로우 했어요!'"></p>
+        <p><strong>팔로우</strong></p>
+    </div>
+    <div th:if="${activity.type == 'POST'}">
+        <p th:text="${activity.content}+'라는 게시글을 작성했어요!'"></p>
+        <p><strong>게시글 작성</strong></p>
+    </div>
+    <div th:if="${activity.type == 'COMMENT'}">
+        <p th:text="${activity.content}+'라는 댓글을 작성했어요!'"></p>
+        <p><strong>댓글 작성</strong></p>
+    </div>
+</div>
+</body>
+</html>
