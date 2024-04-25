@@ -73,7 +73,6 @@ public class UserController {
         User user = userService.findOne(email).orElseThrow(
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
-        System.out.println("이거 찍힘?"+ form.getName());
         if (form.getPassword() != null && !form.getPassword().isEmpty()){
             user.setPassword(passwordEncoder.encode(form.getPassword()));
         }
@@ -177,7 +176,6 @@ public class UserController {
         //사용자 활성화
         String result = "";
         result = userService.verified(email);
-
         return result;
     }
 
