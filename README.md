@@ -1,8 +1,8 @@
 <h1>TockBIt<h1>
 <h2>1.소개<h2>
-<h1>2.설계
+<h2>2.설계
 <details>
-    <summary>API 명세표</summary>
+    <summary><h3>API 명세표</h3></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -27,7 +27,7 @@
 
 ![tockbit 애그리거트 drawio](https://github.com/Lazencas/tockbit/assets/57083072/4251ab25-a8ac-4487-bfdb-94797dbd8b0a)
 </details>
-</h1>
+</h2>
 
 
 
