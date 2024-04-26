@@ -1,6 +1,6 @@
 <h1>TockBIt<h1>
 <h2>1.소개<h2>
-<h2>2.설계<h2>
+<h2>2.설계
 <details>
     <summary><h3>API 명세표<h3></summary>
 
@@ -27,7 +27,7 @@
 
 ![tockbit 애그리거트 drawio](https://github.com/Lazencas/tockbit/assets/57083072/4251ab25-a8ac-4487-bfdb-94797dbd8b0a)
 </details>
-
+<h2>
 
 
 
