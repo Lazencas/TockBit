@@ -1,5 +1,6 @@
 <h1>TockBIt<h1>
 <h2>1.소개<h2>
+    <p>게시판과 SNS기능을 제공하는 주식정보 서비스</p>
 <h2>2.설계
 <details>
     <summary><h5>MSA를 위한 애그리거트</h5></summary>
