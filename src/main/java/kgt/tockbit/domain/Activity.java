@@ -21,9 +21,19 @@ public class Activity {
     @JoinColumn(name = "follower_email")
     private User follower;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
     private String content;
 
     private Timestamp createdAt; // timestamp로 변경
+
+
 
     // 생성자, getter 및 setter
 
@@ -81,11 +91,28 @@ public class Activity {
         this.follower = follower;
     }
 
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
     // 활동 타입 열거형
     public enum ActivityType {
         FOLLOW, // 팔로우
         POST,   // 게시글 작성
         COMMENT, // 댓글 작성
-        LIKE// 게시글 좋아요
+        PLIKE,// 게시글 좋아요
+        CLIKE//댓글 좋아요
     }
 }

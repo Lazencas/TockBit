@@ -1,13 +1,7 @@
 package kgt.tockbit.service;
 
-import kgt.tockbit.domain.Comment;
-import kgt.tockbit.domain.Follow;
-import kgt.tockbit.domain.Post;
-import kgt.tockbit.domain.User;
-import kgt.tockbit.repository.CommentRepository;
-import kgt.tockbit.repository.JpaFollowRepository;
-import kgt.tockbit.repository.PostRepository;
-import kgt.tockbit.repository.UserRepository;
+import kgt.tockbit.domain.*;
+import kgt.tockbit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,23 +17,31 @@ private final UserRepository userRepository;
 private final CommentRepository commentRepository;
 private final PostRepository postRepository;
 
+private final ActivityRepository activityRepository;
+
     @Autowired
-    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository) {
+    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository, ActivityRepository activityRepository) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.activityRepository = activityRepository;
     }
 
     public void follow(String followerEmail, String followedUserEmail){
         Optional<User> follower = userRepository.findByEmail(followerEmail);
         Optional<User> followedUser = userRepository.findByEmail(followedUserEmail);
-        if(follower.isPresent() && followedUser.isPresent()){System.out.println("체큭3");
+        if(follower.isPresent() && followedUser.isPresent()){
             Follow follow = new Follow();
             follow.setFollower(follower.get());
             follow.setFollowedUser(followedUser.get());
             followRepository.save(follow);
-
+            //액티비티 추가로직
+            Activity activity = new Activity();
+            activity.setType(Activity.ActivityType.FOLLOW);
+            activity.setUser(follower.get());
+            activity.setFollower(followedUser.get());
+            activityRepository.save(activity);
         }
     }
 
@@ -52,6 +54,13 @@ private final PostRepository postRepository;
         post.setTitle(title);
         post.setContent(content);
         postRepository.save(post);
+        //activity 추가
+        Activity activity = new Activity();
+        activity.setType(Activity.ActivityType.POST);
+        activity.setUser(user);
+        activity.setPost(post);
+        activity.setContent(content);
+        activityRepository.save(activity);
     }
 
     //댓글 작성
@@ -67,6 +76,13 @@ private final PostRepository postRepository;
         comment.setPost(post);
         comment.setContent(content);
         commentRepository.save(comment);
+        //activity 추가
+        Activity activity = new Activity();
+        activity.setType(Activity.ActivityType.COMMENT);
+        activity.setPost(post);
+        activity.setUser(user);
+        activity.setContent(content);
+        activityRepository.save(activity);
     }
 
 
@@ -84,6 +100,11 @@ private final PostRepository postRepository;
         );
         post.setLikes(post.getLikes()+1);
         postRepository.save(post);
+        //activity 추가
+        Activity activity = new Activity();
+        activity.setType(Activity.ActivityType.PLIKE);
+        activity.setPost(post);
+        activityRepository.save(activity);
         return true;
     }
 
@@ -93,7 +114,16 @@ private final PostRepository postRepository;
         );
         comment.setLikes(comment.getLikes()+1);
         commentRepository.save(comment);
+        //activity 추가
+        Activity activity = new Activity();
+        activity.setType(Activity.ActivityType.CLIKE);
+        activity.setComment(comment);
+        activityRepository.save(activity);
         return true;
+    }
+
+    public void createActivity(Activity activity){
+        activityRepository.save(activity);
     }
 
 

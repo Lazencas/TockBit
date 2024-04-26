@@ -85,20 +85,6 @@ public class ActivityController {
         return "success";
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public String bringme_email_jwt(String tokenValue){
         // JWT 토큰 substring
         String token = jwtUtil.substringToken(tokenValue);
