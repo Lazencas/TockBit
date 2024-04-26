@@ -2,6 +2,14 @@
 <h2>1.소개<h2>
 <h2>2.설계
 <details>
+    <summary><h5>MSA를 위한 애그리거트</h5></summary>
+<br>
+<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
+
+![tockbit 애그리거트 drawio](https://github.com/Lazencas/tockbit/assets/57083072/4251ab25-a8ac-4487-bfdb-94797dbd8b0a)
+</details>
+    
+<details>
     <summary><h5>API 명세표</h5></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
@@ -20,13 +28,7 @@
 
 </details>
 
-<details>
-    <summary><h5>MSA를 위한 애그리거트</h5></summary>
-<br>
-<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
-![tockbit 애그리거트 drawio](https://github.com/Lazencas/tockbit/assets/57083072/4251ab25-a8ac-4487-bfdb-94797dbd8b0a)
-</details>
 </h2>
 
 
