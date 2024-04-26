@@ -20,9 +20,9 @@
 <br>
 <details>
     <summary>MSA를 위한 애그리거트</summary>
-
-<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 <br>
+<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
+
 ![tockbit 애그리거트 drawio](https://github.com/Lazencas/tockbit/assets/57083072/4251ab25-a8ac-4487-bfdb-94797dbd8b0a)
 </details>
 
