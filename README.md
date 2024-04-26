@@ -1,6 +1,6 @@
 
 <details>
-    <summary>API 명세표</summary>
+    <summary><h2>API 명세표<h2></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -10,7 +10,7 @@
 </details>
 <br>
 <details>
-    <summary>ERD</summary>
+    <summary><h2>ERD<h2></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -19,7 +19,7 @@
 </details>
 <br>
 <details>
-    <summary>MSA를 위한 애그리거트</summary>
+    <summary><h2>MSA를 위한 애그리거트<h2></summary>
 <br>
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
