@@ -12,7 +12,7 @@
 </details>
 
 <details>
-    <summary>ERD</summary>
+    <summary><h5>ERD</h5></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -21,7 +21,7 @@
 </details>
 
 <details>
-    <summary>MSA를 위한 애그리거트</summary>
+    <summary><h5>MSA를 위한 애그리거트</h5></summary>
 <br>
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
