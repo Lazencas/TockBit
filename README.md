@@ -2,7 +2,7 @@
 <h2>1.소개<h2>
 <h2>2.설계
 <details>
-    <summary><h3>API 명세표</h3></summary>
+    <summary><h5>API 명세표</h5></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
