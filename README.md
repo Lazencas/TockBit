@@ -4,7 +4,7 @@
    
 <h2>2.설계
 <details>
-    <summary><h5>MSA를 위한 애그리거트</h5></summary>
+    <summary>MSA를 위한 애그리거트</summary>
 <br>
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -12,7 +12,7 @@
 </details>
     
 <details>
-    <summary><h5>API 명세표</h5></summary>
+    <summary>API 명세표</summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -22,7 +22,7 @@
 </details>
 
 <details>
-    <summary><h5>ERD</h5></summary>
+    <summary>ERD</summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
