@@ -2,9 +2,9 @@
 <h2>1.소개</h2>
 <p>게시판과 SNS기능을 제공하는 주식정보 서비스</p>
    
-<h2>2.설계
+<h2>2.설계</h2>
 <details>
-    <summary>MSA를 위한 애그리거트</summary>
+    <summary><p>MSA를 위한 애그리거트</p></summary>
 <br>
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -12,7 +12,7 @@
 </details>
     
 <details>
-    <summary>API 명세표</summary>
+    <summary><p>API 명세표</p></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -22,7 +22,7 @@
 </details>
 
 <details>
-    <summary>ERD</summary>
+    <summary><p>ERD</p></summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
@@ -31,7 +31,7 @@
 </details>
 
 
-</h2>
+
 
 
 
