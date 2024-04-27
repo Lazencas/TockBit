@@ -4,7 +4,7 @@
    
 <h2>2.설계</h2>
 <details>
-    <h5><summary>MSA를 위한 애그리거트</summary></h5>
+    <summary>MSA를 위한 애그리거트</summary>
 <br>
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
