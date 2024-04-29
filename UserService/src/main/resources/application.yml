@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
   mail:
     host: smtp.gmail.com
@@ -15,3 +18,22 @@ spring:
           timeout: 5000
           writetimeout: 5000
     auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
+

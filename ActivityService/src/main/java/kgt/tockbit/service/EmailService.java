@@ -1,12 +1,10 @@
 package kgt.tockbit.service;
 
 
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 @Transactional
@@ -27,7 +25,7 @@ public class EmailService {
     }
 
     // 발신할 이메일 데이터 세팅
-    private SimpleMailMessage createEmailForm(String toEmail,String title,String text) {
+    private SimpleMailMessage createEmailForm(String toEmail, String title, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject(title);
