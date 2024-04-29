@@ -8,7 +8,8 @@
 <br>
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 
-![tockbit 애그리거트 drawio](https://github.com/Lazencas/tockbit/assets/57083072/4251ab25-a8ac-4487-bfdb-94797dbd8b0a)
+![image](https://github.com/Lazencas/tockbit/assets/57083072/41841e1f-74a3-47f0-af1d-a8f3bb9a6dec)
+
 </details>
     
 <details>
