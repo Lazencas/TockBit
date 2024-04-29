@@ -161,7 +161,7 @@ public class UserController {
         return ResponseEntity.ok("이메일 전송 성공!");
     }
 
-    @GetMapping("confirm")
+    @GetMapping("/confirm")
     public String confirm(@RequestParam("token") String tokenValue) {
         //JWT토큰 자르기
         String token = jwtUtil.substringToken(tokenValue);
