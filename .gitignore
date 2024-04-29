@@ -4,6 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.properties
+.yml
+application.properties
+application.yml
 
 ### STS ###
 .apt_generated
@@ -35,7 +39,5 @@ out/
 
 ### VS Code ###
 .vscode/
-.properties
-application.properties
-application.yml
+
 
