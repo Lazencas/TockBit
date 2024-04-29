@@ -1,6 +1,9 @@
 package kgt.tockbit.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 
 import java.sql.Timestamp;
 
@@ -22,19 +25,19 @@ public class User {
     private boolean islogin;
 
     @Column(nullable = false)
-    private Timestamp join_data;
+    private Timestamp join_date;
 
-    public Timestamp getJoin_data() {
-        return join_data;
+    public Timestamp getJoin_date() {
+        return join_date;
     }
 
     @PrePersist
     public void prePersist(){
-        this.join_data = new Timestamp(System.currentTimeMillis());
+        this.join_date = new Timestamp(System.currentTimeMillis());
     }
 
-    public void setJoin_data(Timestamp join_data) {
-        this.join_data = join_data;
+    public void setJoin_date(Timestamp join_data) {
+        this.join_date = join_data;
     }
 
     public boolean isIslogin() {

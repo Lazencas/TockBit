@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-public class Activity {
+public class NewsFeed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,21 +13,14 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_email")
-    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "follower_email")
-    private User follower;
+    private String user_email;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    private String followed;
 
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
+    private Long post_id;
+
+    private Long comment_id;
 
     private String content;
 
@@ -58,15 +51,6 @@ public class Activity {
         this.type = type;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
     public String getContent() {
         return content;
     }
@@ -83,28 +67,36 @@ public class Activity {
         this.createdAt = createdAt;
     }
 
-    public User getFollower() {
-        return follower;
+    public String getUser() {
+        return user_email;
     }
 
-    public void setFollower(User follower) {
-        this.follower = follower;
+    public void setUser(String user) {
+        this.user_email = user;
     }
 
-    public Post getPost() {
-        return post;
+    public String getFollowed() {
+        return followed;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setFollowed(String followed) {
+        this.followed = followed;
     }
 
-    public Comment getComment() {
-        return comment;
+    public Long getPost_id() {
+        return post_id;
     }
 
-    public void setComment(Comment comment) {
-        this.comment = comment;
+    public void setPost_id(Long post_id) {
+        this.post_id = post_id;
+    }
+
+    public Long getComment_id() {
+        return comment_id;
+    }
+
+    public void setComment_id(Long comment_id) {
+        this.comment_id = comment_id;
     }
 
     // 활동 타입 열거형
