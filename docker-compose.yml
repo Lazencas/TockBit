@@ -1,0 +1,17 @@
+version: '1'
+services:
+
+userservice:
+  build: ./UserService
+  ports:
+    - "8080:8080"
+
+activityservice:
+  build: ./ActivityService
+  ports:
+    - "8081:8081"
+
+newsfeedservice:
+  build: ./NewsFeedService
+  ports:
+    - "8082:8082"
