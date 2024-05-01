@@ -2,9 +2,9 @@ package kgt.tockbit.controller;
 
 import io.jsonwebtoken.Claims;
 import kgt.tockbit.domain.Post;
+import kgt.tockbit.dto.PostDto;
 import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.service.ActivityService;
-import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,11 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class ActivityController {
-    private final UserService userService;
     private final ActivityService activityService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public ActivityController(UserService userService, ActivityService activityService, JwtUtil jwtUtil) {
-        this.userService = userService;
+    public ActivityController(ActivityService activityService, JwtUtil jwtUtil) {
         this.activityService = activityService;
         this.jwtUtil = jwtUtil;
     }
@@ -48,6 +46,11 @@ public class ActivityController {
         String email =  bringme_email_jwt(tokenValue);
         activityService.createPost(email,title, content);
         return "redirect:/activity/post";
+    }
+    @ResponseBody
+    @GetMapping("/activity/post/{post_id}")
+    public PostDto getPost(@PathVariable("post_id") Long id){
+        return activityService.getPost(id);
     }
     @ResponseBody
     @GetMapping("/activity/post/{post_id}/like")
@@ -98,5 +101,7 @@ public class ActivityController {
         String email = info.getSubject();
         return  email;
     }
+
+
 
 }

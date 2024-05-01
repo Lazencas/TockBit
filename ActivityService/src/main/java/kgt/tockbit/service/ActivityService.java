@@ -1,6 +1,10 @@
 package kgt.tockbit.service;
 
+import jakarta.ws.rs.NotFoundException;
 import kgt.tockbit.domain.*;
+import kgt.tockbit.dto.PostDto;
+import kgt.tockbit.dto.UserDto;
+import kgt.tockbit.feign.UserClient;
 import kgt.tockbit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +20,16 @@ private final JpaFollowRepository followRepository;
 private final UserRepository userRepository;
 private final CommentRepository commentRepository;
 private final PostRepository postRepository;
-
+private final UserClient userClient;
 private final ActivityRepository activityRepository;
 
     @Autowired
-    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository, ActivityRepository activityRepository) {
+    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository, UserClient userClient, ActivityRepository activityRepository) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.userClient = userClient;
         this.activityRepository = activityRepository;
     }
 
@@ -44,20 +49,44 @@ private final ActivityRepository activityRepository;
             activityRepository.save(activity);
         }
     }
+    public PostDto getPost(Long postId){
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NotFoundException("해당 아이디의 게시물을 찾지 못했습니다.")
+        );
+        System.out.println(post.getUserEmail());
+        UserDto user = userClient.getUserByEmail(post.getUserEmail());
+        System.out.println("해당 유저의 이메일은"+user.getEmail());
+        System.out.println("해당 유저의 이름은"+user.getName());
+
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setTitle(post.getTitle());
+        postDto.setUserName(user.getName());
+        postDto.setCreatedAt(post.getCreatedAt());
+        postDto.setContent(post.getContent());
+
+        return postDto;
+    }
+
 
     public void createPost(String email, String title, String content){
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("해당 사용자가 없습니다.")
-        );
+//        User user = userRepository.findByEmail(email).orElseThrow(
+//                () -> new IllegalArgumentException("해당 사용자가 없습니다.")
+//        );
+        UserDto user = userClient.getUserByEmail(email);
+        System.out.println("해당 유저의 이메일은"+user.getEmail());
+        System.out.println("해당 유저의 이름은"+user.getName());
+
         Post post = new Post();
-        post.setUser(user);
+
+
         post.setTitle(title);
         post.setContent(content);
         postRepository.save(post);
         //activity 추가
         Activity activity = new Activity();
         activity.setType(Activity.ActivityType.POST);
-        activity.setUser(user);
+//        activity.setUser(user);
         activity.setPost(post);
         activity.setContent(content);
         activityRepository.save(activity);

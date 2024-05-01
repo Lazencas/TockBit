@@ -12,9 +12,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_email")
-    private User user;
+    @Column(name = "user_email")
+    private String userEmail;
+
+    @Transient
+    private String userName;
 
     @Column(nullable = false)
     private String title;
@@ -52,15 +54,6 @@ public class Post {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -91,5 +84,21 @@ public class Post {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

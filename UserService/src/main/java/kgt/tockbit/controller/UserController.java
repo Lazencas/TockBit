@@ -2,7 +2,9 @@ package kgt.tockbit.controller;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.NotFoundException;
 import kgt.tockbit.domain.User;
+import kgt.tockbit.dto.UserDto;
 import kgt.tockbit.dto.loginRequestDto;
 import kgt.tockbit.jwt.JwtUtil;
 import kgt.tockbit.service.UserService;
@@ -11,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,9 +26,10 @@ public class UserController {
 
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-
     public static final String siteURL = "localhost:8080";
     private final UserService userService;
+
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -101,7 +101,6 @@ public class UserController {
     public String loginPage() {
         return "users/login";
     }
-
     @PostMapping("/auth/login")
     public String login(loginRequestDto requestDto, HttpServletResponse res){
         try {
@@ -112,23 +111,6 @@ public class UserController {
         return "users/home";
 
     }
-
-
-
-    public String bringme_email_jwt(String tokenValue){
-        // JWT 토큰 substring
-        String token = jwtUtil.substringToken(tokenValue);
-        // 토큰 검증
-        if(!jwtUtil.validateToken(token)){
-            throw new IllegalArgumentException("Token Error");
-        }
-        // 토큰에서 사용자 정보 가져오기
-        Claims info = jwtUtil.getUserInfoFromToken(token);
-        // 사용자 email
-        String email = info.getSubject();
-        return  email;
-    }
-
 
 
     @GetMapping("/auth/logout")
@@ -177,6 +159,22 @@ public class UserController {
         String result = "";
         result = userService.verified(email);
         return result;
+    }
+
+    //여기부터는 서비스간의 통신 API
+    @ResponseBody
+    @GetMapping("/auth/comm/{email}")
+    public UserDto getUserByEmail(@PathVariable("email") String email){
+        User user = userService.findOne(email).orElseThrow(
+                () -> new NotFoundException("해당 이메일의 유저를 찾지 못했습니다."+ email)
+        );
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        userDto.setName(user.getName());
+        System.out.println(userDto.getEmail());
+        System.out.println(userDto.getName());
+        return userDto;
+
     }
 
 

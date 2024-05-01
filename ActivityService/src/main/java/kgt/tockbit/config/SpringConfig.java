@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kgt.tockbit.repository.JpaUserRepository;
 import kgt.tockbit.repository.UserRepository;
-import kgt.tockbit.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,10 +26,7 @@ public class SpringConfig {
 //        this.userRepository = userRepository;
 //    }
 
-    @Bean
-    public UserService userService(){
-        return new UserService(userRepository());
-    }
+
 
     @Bean
     public UserRepository userRepository(){
