@@ -41,6 +41,7 @@ private final ActivityRepository activityRepository;
             follow.setFollower(follower.get());
             follow.setFollowedUser(followedUser.get());
             followRepository.save(follow);
+
             //액티비티 추가로직
             Activity activity = new Activity();
             activity.setType(Activity.ActivityType.FOLLOW);
@@ -78,7 +79,6 @@ private final ActivityRepository activityRepository;
         System.out.println("해당 유저의 이름은"+user.getName());
 
         Post post = new Post();
-
 
         post.setTitle(title);
         post.setContent(content);

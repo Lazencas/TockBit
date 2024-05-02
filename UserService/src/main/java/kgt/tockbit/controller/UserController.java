@@ -1,6 +1,7 @@
 package kgt.tockbit.controller;
 
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.NotFoundException;
 import kgt.tockbit.domain.User;
@@ -109,12 +110,14 @@ public class UserController {
             return "redirect:/auth/login?error";
         }
         return "users/home";
-
     }
 
 
     @GetMapping("/auth/logout")
-    public String logout(@CookieValue(JwtUtil.AUTHORIZATION_HEADER) String tokenValue, HttpServletResponse response) {
+    public String logout(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String tokenValue, HttpServletResponse response) {
+
+        System.out.println("호출되요?"+tokenValue);
+        System.out.println("확인");
         // JWT 토큰 substring
         String token = jwtUtil.substringToken(tokenValue);
         // 토큰 검증
@@ -125,8 +128,12 @@ public class UserController {
         Claims info = jwtUtil.getUserInfoFromToken(token);
         // 사용자 email
         String email = info.getSubject();
+        System.out.println("해당토큰의 사용자는"+email);
         userService.logout(email);
         jwtUtil.clearCookie(response,"Authorization");
+        Cookie cookie = new Cookie("Authorization", "");
+        cookie.setMaxAge(0);
+        System.out.println("호출되요?2");
         return "users/login";
     }
 
