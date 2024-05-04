@@ -1,5 +1,6 @@
 package org.example.filter;
 
+import io.jsonwebtoken.Claims;
 import org.example.jwtutil.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -30,8 +31,15 @@ public class GlobalAuthFilter extends AbstractGatewayFilterFactory<GlobalAuthFil
             System.out.println("확인"+token);
             if (token != null && jwtUtil.validateToken(jwtUtil.substringToken(token))) {
                 //토큰이 null이 아니고, 유효한 경우 요청을 계속 진행
+                //이메일 필드를 만들고, 토큰에서 해당 값 추출해서 저장
+                Claims info = jwtUtil.getUserInfoFromToken(jwtUtil.substringToken(token));
+                String email = info.getSubject();
+
+                //이메일을 헤더에 추가
+                ServerHttpRequest modifiedRequest = request.mutate().header("User-Email", email).build();
+
                 System.out.println("유효한거 확인");
-                return chain.filter(exchange);
+                return chain.filter(exchange.mutate().request(modifiedRequest).build());
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT token");
             }

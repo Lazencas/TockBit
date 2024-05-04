@@ -114,20 +114,20 @@ public class UserController {
 
 
     @GetMapping("/auth/logout")
-    public String logout(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String tokenValue, HttpServletResponse response) {
+    public String logout(@RequestHeader("User-Emai") String email, HttpServletResponse response) {
 
-        System.out.println("호출되요?"+tokenValue);
+        System.out.println("호출되요?"+email);
         System.out.println("확인");
         // JWT 토큰 substring
-        String token = jwtUtil.substringToken(tokenValue);
+//        String token = jwtUtil.substringToken(tokenValue);
         // 토큰 검증
-        if(!jwtUtil.validateToken(token)){
-            throw new IllegalArgumentException("Token Error");
-        }
+//        if(!jwtUtil.validateToken(token)){
+//            throw new IllegalArgumentException("Token Error");
+//        }
         // 토큰에서 사용자 정보 가져오기
-        Claims info = jwtUtil.getUserInfoFromToken(token);
+//        Claims info = jwtUtil.getUserInfoFromToken(token);
         // 사용자 email
-        String email = info.getSubject();
+//        String email = info.getSubject();
         System.out.println("해당토큰의 사용자는"+email);
         userService.logout(email);
         jwtUtil.clearCookie(response,"Authorization");

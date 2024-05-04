@@ -9,8 +9,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-public class TockbitApplication {
+public class ActivityApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(TockbitApplication.class, args);
+		SpringApplication.run(ActivityApplication.class, args);
 	}
 }
