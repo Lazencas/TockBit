@@ -13,13 +13,11 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_email")
-    private User user;
+    @Column(name = "user_email")
+    private String userEmail;
 
-    @ManyToOne
-    @JoinColumn(name = "follower_email")
-    private User follower;
+    @Column(name = "followed_email")
+    private String followed;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -58,14 +56,21 @@ public class Activity {
         this.type = type;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
+    public String getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(String followed) {
+        this.followed = followed;
+    }
 
     public String getContent() {
         return content;
@@ -81,14 +86,6 @@ public class Activity {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public User getFollower() {
-        return follower;
-    }
-
-    public void setFollower(User follower) {
-        this.follower = follower;
     }
 
     public Post getPost() {

@@ -10,13 +10,11 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "follower_email")
-    private User follower;
+    @Column(name = "follower_email")
+    private String follower;
 
-    @ManyToOne
-    @JoinColumn(name = "followed_user_email")
-    private User followedUser;
+    @Column(name = "followed_email")
+    private String followed;
 
     private Timestamp createdAt;
 
@@ -34,27 +32,27 @@ public class Follow {
         this.id = id;
     }
 
-    public User getFollower() {
-        return follower;
-    }
-
-    public void setFollower(User follower) {
-        this.follower = follower;
-    }
-
-    public User getFollowedUser() {
-        return followedUser;
-    }
-
-    public void setFollowedUser(User followedUser) {
-        this.followedUser = followedUser;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getFollower() {
+        return follower;
+    }
+
+    public void setFollower(String follower) {
+        this.follower = follower;
+    }
+
+    public String getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(String followed) {
+        this.followed = followed;
     }
 }

@@ -1,7 +1,6 @@
 package kgt.tockbit.repository;
 
 import kgt.tockbit.domain.Activity;
-import kgt.tockbit.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

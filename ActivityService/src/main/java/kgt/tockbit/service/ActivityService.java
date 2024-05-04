@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ActivityService {
-private final JpaFollowRepository followRepository;
+private final FollowRepository followRepository;
 private final UserRepository userRepository;
 private final CommentRepository commentRepository;
 private final PostRepository postRepository;
@@ -24,7 +24,7 @@ private final UserClient userClient;
 private final ActivityRepository activityRepository;
 
     @Autowired
-    public ActivityService(JpaFollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository, UserClient userClient, ActivityRepository activityRepository) {
+    public ActivityService(FollowRepository followRepository, UserRepository userRepository, CommentRepository commentRepository, PostRepository postRepository, UserClient userClient, ActivityRepository activityRepository) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;

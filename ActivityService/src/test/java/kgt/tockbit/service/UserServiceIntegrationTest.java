@@ -1,6 +1,5 @@
 package kgt.tockbit.service;
 
-import kgt.tockbit.domain.User;
 import kgt.tockbit.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,6 @@ package kgt.tockbit.config;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import kgt.tockbit.repository.JpaUserRepository;
 import kgt.tockbit.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

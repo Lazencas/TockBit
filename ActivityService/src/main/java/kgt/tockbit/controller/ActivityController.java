@@ -2,7 +2,6 @@ package kgt.tockbit.controller;
 
 import kgt.tockbit.domain.Post;
 import kgt.tockbit.service.ActivityService;
-import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,10 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class ActivityController {
-    private final UserService userService;
     private final ActivityService activityService;
 
     @Autowired
-    public ActivityController(UserService userService, ActivityService activityService) {
-        this.userService = userService;
+    public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
     }
 
