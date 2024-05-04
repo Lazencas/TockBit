@@ -8,7 +8,7 @@ LABEL maintainer="dkfkskgks@gmail.com"
 VOLUME /tmp
 
 # Make port 8080 available to the world outside this container
-EXPOSE 8082
+EXPOSE 8080
 
 WORKDIR /app
 
@@ -16,7 +16,6 @@ COPY . .
 
 RUN chmod +x ./gradlew
 RUN ./gradlew clean build
-
 
 # The application's jar file
 ARG JAR_FILE=build/libs/*.jar

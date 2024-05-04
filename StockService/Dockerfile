@@ -8,7 +8,7 @@ LABEL maintainer="dkfkskgks@gmail.com"
 VOLUME /tmp
 
 # Make port 8080 available to the world outside this container
-EXPOSE 8082
+EXPOSE 8085
 
 WORKDIR /app
 
