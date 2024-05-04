@@ -17,6 +17,9 @@ public class GatewayConfig {
                 .route("user-service", r -> r.path("/auth/register")
                         .filters(f -> f.removeRequestHeader("Cookie")) // 전역 필터 제거
                         .uri("lb://user-service"))
+                .route("stock-service", r -> r.path("/stock")
+                        .filters(f -> f.removeRequestHeader("Cookie"))
+                        .uri("lb://stock-service"))
 //                .route("activity-service", r -> r.path("/activity/**")
 //                        .uri("lb://activity-service"))
 //                .route("newsfeed-service", r -> r.path("/newsfeed")
