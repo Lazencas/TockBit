@@ -22,13 +22,13 @@ public class ActivityController {
     }
 
     @ResponseBody
-    @GetMapping("/activity/{followerEmail}/{followedUserEmail}")
-    public ResponseEntity<String> follow(@PathVariable String followerEmail, @PathVariable String followedUserEmail) {
+    @GetMapping("/activity/follow/{followedUserEmail}")
+    public ResponseEntity<String> follow(@RequestHeader("User-Email") String followerEmail, @PathVariable String followedUserEmail) {
         try {
             activityService.follow(followerEmail, followedUserEmail);
-            return new ResponseEntity<>("Followed successfully", HttpStatus.OK);
+            return new ResponseEntity<>("팔로우 성공!", HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/activity/post")
