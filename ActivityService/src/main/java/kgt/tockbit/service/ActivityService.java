@@ -5,7 +5,7 @@ import kgt.tockbit.domain.Activity;
 import kgt.tockbit.domain.Comment;
 import kgt.tockbit.domain.Follow;
 import kgt.tockbit.domain.Post;
-import kgt.tockbit.dto.ActivityDto;
+import kgt.tockbit.dto.NewsFeedDto;
 import kgt.tockbit.dto.PostDto;
 import kgt.tockbit.dto.UserDto;
 import kgt.tockbit.feign.UserClient;
@@ -172,12 +172,36 @@ private final ActivityRepository activityRepository;
         activityRepository.save(activity);
     }
 
-    public List<ActivityDto> getActivityByUserEmail(String emial){
-       List<Activity> activities =  activityRepository.findByUserEmail(emial);
-       List<ActivityDto> activityDtos = activities.stream()
-               .map(ActivityDto::new)
+    //해당 유저의 활동들을 반환
+    public List<NewsFeedDto> getActivityByUserEmail(String email){
+       List<Activity> activities =  activityRepository.findByUserEmail(email);
+       List<NewsFeedDto> activityDtos = activities.stream()
+               .map(NewsFeedDto::new)
                .collect(Collectors.toList());
         return activityDtos;
     }
+
+    //내가 팔로우한 유저들 반환
+    public List<UserDto> getFollowed(String followerEmail){
+    List<String> followedEmails = followRepository.findFollowedByEmail(followerEmail);
+    return followedEmails.stream().map(email -> {
+        UserDto userDto = new UserDto();
+        userDto.setEmail(email);
+        return userDto;
+    }).collect(Collectors.toList());
+    }
+
+    //나를 팔로우 한 유저들 반환
+    public List<UserDto> getFollow(String followedEmail){
+        List<String> followerEmails = followRepository.findFollowerByEmail(followedEmail);
+        return followerEmails.stream().map(email -> {
+            UserDto userDto = new UserDto();
+            userDto.setEmail(email);
+            return userDto;
+        }).collect(Collectors.toList());
+    }
+
+
+
 
 }

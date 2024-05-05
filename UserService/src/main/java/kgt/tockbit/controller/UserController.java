@@ -181,7 +181,6 @@ public class UserController {
         System.out.println(userDto.getEmail());
         System.out.println(userDto.getName());
         return userDto;
-
     }
 
 

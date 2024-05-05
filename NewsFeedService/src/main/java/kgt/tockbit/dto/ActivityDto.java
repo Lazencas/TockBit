@@ -1,6 +1,5 @@
 package kgt.tockbit.dto;
 
-import kgt.tockbit.domain.Activity;
 
 import java.sql.Timestamp;
 
@@ -94,16 +93,5 @@ public class ActivityDto {
         COMMENT, // 댓글 작성
         PLIKE,// 게시글 좋아요
         CLIKE//댓글 좋아요
-    }
-
-    public ActivityDto(Activity activity) {
-        this.id = activity.getId();
-        this.type = activity.getType().toString();
-        this.userEmail = activity.getUserEmail();
-        this.followed = activity.getFollowed();
-        this.post_id = activity.getPost().getId().toString();
-        this.comment_id = activity.getComment().getId().toString();
-        this.content = activity.getContent();
-        this.createdAt = activity.getCreatedAt();
     }
 }

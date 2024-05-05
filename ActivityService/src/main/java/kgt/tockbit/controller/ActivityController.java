@@ -1,7 +1,8 @@
 package kgt.tockbit.controller;
 
 import kgt.tockbit.domain.Post;
-import kgt.tockbit.dto.ActivityDto;
+import kgt.tockbit.dto.NewsFeedDto;
+import kgt.tockbit.dto.UserDto;
 import kgt.tockbit.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,8 +81,20 @@ public class ActivityController {
     //newsfeed-service로 보내줄 API
     @ResponseBody
     @GetMapping("/activity/comm/{email}")
-    public List<ActivityDto> getActivity(@PathVariable("email") String email){
+    public List<NewsFeedDto> getActivity(@PathVariable("email") String email){
     return activityService.getActivityByUserEmail(email);
+    }
+
+    //팔로워 이메일을 보내서, 이메일이 팔로우 한 사람들 가져오기
+    @ResponseBody
+    @GetMapping("/activity/comm/follower/{email}")
+    public List<UserDto> getFollowed(String follower){
+        return getFollowed(follower);
+    }
+    //팔로우 된 이메일을 보내서, 이메일을 팔로우 한 사람들 가져오기
+    @GetMapping("/activity/comm/follwed/{email}")
+    public List<UserDto> getFollow(String followed){
+        return getFollow(followed);
     }
 
 }
