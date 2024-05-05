@@ -34,7 +34,6 @@ public class Activity {
 
 
     // 생성자, getter 및 setter
-
     @PrePersist
     public void prePersist(){
         this.createdAt = new Timestamp(System.currentTimeMillis());

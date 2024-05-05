@@ -5,6 +5,7 @@ import kgt.tockbit.domain.Activity;
 import kgt.tockbit.domain.Comment;
 import kgt.tockbit.domain.Follow;
 import kgt.tockbit.domain.Post;
+import kgt.tockbit.dto.ActivityDto;
 import kgt.tockbit.dto.PostDto;
 import kgt.tockbit.dto.UserDto;
 import kgt.tockbit.feign.UserClient;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -168,6 +170,14 @@ private final ActivityRepository activityRepository;
 
     public void createActivity(Activity activity){
         activityRepository.save(activity);
+    }
+
+    public List<ActivityDto> getActivityByUserEmail(String emial){
+       List<Activity> activities =  activityRepository.findByUserEmail(emial);
+       List<ActivityDto> activityDtos = activities.stream()
+               .map(ActivityDto::new)
+               .collect(Collectors.toList());
+        return activityDtos;
     }
 
 }

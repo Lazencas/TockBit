@@ -1,6 +1,7 @@
 package kgt.tockbit.controller;
 
 import kgt.tockbit.domain.Post;
+import kgt.tockbit.dto.ActivityDto;
 import kgt.tockbit.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,6 +75,13 @@ public class ActivityController {
     public String createComment(@RequestHeader("User-Email") String email,@PathVariable("post_id") Long post_id, @RequestParam("con") String content){
         activityService.createComment(email,post_id,content);
         return "success";
+    }
+
+    //newsfeed-service로 보내줄 API
+    @ResponseBody
+    @GetMapping("/activity/comm/{email}")
+    public List<ActivityDto> getActivity(@PathVariable("email") String email){
+    return activityService.getActivityByUserEmail(email);
     }
 
 }
