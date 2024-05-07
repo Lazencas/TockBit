@@ -1,8 +1,9 @@
 package kgt.tockbit.controller;
 
 import kgt.tockbit.domain.Post;
+import kgt.tockbit.dto.NewsFeedDto;
+import kgt.tockbit.dto.UserDto;
 import kgt.tockbit.service.ActivityService;
-import kgt.tockbit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +16,21 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class ActivityController {
-    private final UserService userService;
     private final ActivityService activityService;
 
     @Autowired
-    public ActivityController(UserService userService, ActivityService activityService) {
-        this.userService = userService;
+    public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
     }
 
     @ResponseBody
-    @GetMapping("/activity/{followerEmail}/{followedUserEmail}")
-    public ResponseEntity<String> follow(@PathVariable String followerEmail, @PathVariable String followedUserEmail) {
+    @GetMapping("/activity/follow/{followedUserEmail}")
+    public ResponseEntity<String> follow(@RequestHeader("User-Email") String followerEmail, @PathVariable String followedUserEmail) {
         try {
             activityService.follow(followerEmail, followedUserEmail);
-            return new ResponseEntity<>("Followed successfully", HttpStatus.OK);
+            return new ResponseEntity<>("팔로우 성공!", HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/activity/post")
@@ -77,6 +76,26 @@ public class ActivityController {
     public String createComment(@RequestHeader("User-Email") String email,@PathVariable("post_id") Long post_id, @RequestParam("con") String content){
         activityService.createComment(email,post_id,content);
         return "success";
+    }
+
+    //newsfeed-service로 보내줄 API
+    @ResponseBody
+    @GetMapping("/activity/comm/{email}")
+    public List<NewsFeedDto> getActivity(@PathVariable("email") String email){
+    return activityService.getActivityByUserEmail(email);
+    }
+
+    //팔로워 이메일을 보내서, 이메일이 팔로우 한 사람들 가져오기
+    @ResponseBody
+    @GetMapping("/activity/comm/follower/{email}")
+    public List<UserDto> getFollowed(@PathVariable("email") String follower){
+        return activityService.getFollowed(follower);
+    }
+    //팔로우 된 이메일을 보내서, 이메일을 팔로우 한 사람들 가져오기
+    @ResponseBody
+    @GetMapping("/activity/comm/follwed/{email}")
+    public List<UserDto> getFollow(@PathVariable("email") String followed){
+        return activityService.getFollow(followed);
     }
 
 }

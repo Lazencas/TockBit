@@ -1,19 +1,8 @@
-package kgt.tockbit.domain;
+package kgt.tockbit.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
-@Entity
-public class UserInfo {
-    //사용자 이메일
-    @Id
-    @Column(unique = true)
-    private  String email;
-    //사용자의 이름
+public class UserDto {
+    private String email;
     private String name;
-    //인사말
-
 
     public String getEmail() {
         return email;
@@ -30,5 +19,4 @@ public class UserInfo {
     public void setName(String name) {
         this.name = name;
     }
-
 }

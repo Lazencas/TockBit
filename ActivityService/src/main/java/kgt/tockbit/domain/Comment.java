@@ -10,9 +10,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_email")
-    private User user;
+    @Column(name = "user_email")
+    private String userEmail;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -47,12 +46,12 @@ public class Comment {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public Post getPost() {

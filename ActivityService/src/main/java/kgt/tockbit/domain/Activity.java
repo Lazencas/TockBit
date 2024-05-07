@@ -13,13 +13,11 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_email")
-    private User user;
+    @Column(name = "user_email")
+    private String userEmail;
 
-    @ManyToOne
-    @JoinColumn(name = "follower_email")
-    private User follower;
+    @Column(name = "followed_email")
+    private String followed;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -35,8 +33,8 @@ public class Activity {
 
 
 
-    // 생성자, getter 및 setter
 
+    // 생성자, getter 및 setter
     @PrePersist
     public void prePersist(){
         this.createdAt = new Timestamp(System.currentTimeMillis());
@@ -58,14 +56,23 @@ public class Activity {
         this.type = type;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
+    public String getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(String followed) {
+        this.followed = followed;
+    }
+
+    private String postTitle;
 
     public String getContent() {
         return content;
@@ -83,20 +90,19 @@ public class Activity {
         this.createdAt = createdAt;
     }
 
-    public User getFollower() {
-        return follower;
-    }
-
-    public void setFollower(User follower) {
-        this.follower = follower;
-    }
-
     public Post getPost() {
         return post;
     }
 
+    public String getPostTitle() {
+        return postTitle;
+    }
+
     public void setPost(Post post) {
         this.post = post;
+        if(post != null){
+            this.postTitle = post.getTitle();
+        }
     }
 
     public Comment getComment() {
