@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -174,25 +175,51 @@ private final ActivityRepository activityRepository;
 
     //해당 유저의 활동들을 반환
     public List<NewsFeedDto> getActivityByUserEmail(String email){
+        System.out.println("조회1");
        List<Activity> activities =  activityRepository.findByUserEmail(email);
-       List<NewsFeedDto> activityDtos = activities.stream()
-               .map(NewsFeedDto::new)
-               .collect(Collectors.toList());
+       List<NewsFeedDto> activityDtos = new ArrayList<>();
+       for (Activity activity : activities){
+           NewsFeedDto dto = new NewsFeedDto();
+           System.out.println("이거확인해야함"+activity.getUserEmail());
+           dto.setId(activity.getId());
+           dto.setType(activity.getType().toString());
+           dto.setUserEmail(activity.getUserEmail());
+           dto.setCreatedAt(activity.getCreatedAt());
+           if(activity.getFollowed()!=null){
+               dto.setFollowed(activity.getFollowed());
+           }
+          if(activity.getContent() != null){
+              dto.setContent(activity.getContent());
+          }
+           // Post와 Comment 객체가 null이 아닌 경우에만 매칭시킵니다.
+           if (activity.getPost() != null) {
+               dto.setPost_id(activity.getPost().getId().toString());
+               dto.setTitle(activity.getPost().getTitle());
+           }
+           if (activity.getComment() != null) {
+               dto.setComment_id(activity.getComment().getId().toString());
+           }
+           activityDtos.add(dto);
+       }
         return activityDtos;
     }
 
     //내가 팔로우한 유저들 반환
     public List<UserDto> getFollowed(String followerEmail){
+        System.out.println("조회2, 이메일체크"+followerEmail);
     List<String> followedEmails = followRepository.findFollowedByEmail(followerEmail);
+        System.out.println("유저0"+followedEmails);
     return followedEmails.stream().map(email -> {
         UserDto userDto = new UserDto();
         userDto.setEmail(email);
+        System.out.println("유저"+userDto.getEmail());
         return userDto;
     }).collect(Collectors.toList());
     }
 
     //나를 팔로우 한 유저들 반환
     public List<UserDto> getFollow(String followedEmail){
+        System.out.println("조회3");
         List<String> followerEmails = followRepository.findFollowerByEmail(followedEmail);
         return followerEmails.stream().map(email -> {
             UserDto userDto = new UserDto();

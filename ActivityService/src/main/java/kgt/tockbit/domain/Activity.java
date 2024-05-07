@@ -33,6 +33,7 @@ public class Activity {
 
 
 
+
     // 생성자, getter 및 setter
     @PrePersist
     public void prePersist(){
@@ -71,6 +72,8 @@ public class Activity {
         this.followed = followed;
     }
 
+    private String postTitle;
+
     public String getContent() {
         return content;
     }
@@ -91,8 +94,15 @@ public class Activity {
         return post;
     }
 
+    public String getPostTitle() {
+        return postTitle;
+    }
+
     public void setPost(Post post) {
         this.post = post;
+        if(post != null){
+            this.postTitle = post.getTitle();
+        }
     }
 
     public Comment getComment() {

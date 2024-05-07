@@ -3,7 +3,7 @@ package kgt.tockbit.dto;
 
 import java.sql.Timestamp;
 
-public class ActivityDto {
+public class NewsFeedDto{
 
     private Long id;
 
@@ -13,6 +13,8 @@ public class ActivityDto {
 
     private String followed;
     private String post_id;
+
+    private String title;
 
     private String comment_id;
 
@@ -86,6 +88,14 @@ public class ActivityDto {
         this.createdAt = createdAt;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     // 활동 타입 열거형
     public enum ActivityType {
         FOLLOW, // 팔로우
@@ -94,4 +104,23 @@ public class ActivityDto {
         PLIKE,// 게시글 좋아요
         CLIKE//댓글 좋아요
     }
+
+//    public NewsFeedDto(Activity activity) {
+//        this.id = activity.getId();
+//        this.type = activity.getType().toString();
+//        this.userEmail = activity.getUserEmail();
+//        if (activity.getFollowed() !=null){
+//            this.followed = activity.getFollowed();
+//        }
+//        if (activity.getPost() != null){
+//            this.post_id = activity.getPost().getId().toString();
+//        }
+//        if (activity.getComment() != null){
+//            this.comment_id = activity.getComment().getId().toString();
+//        }
+//        if (activity.getContent() != null){
+//            this.content = activity.getContent();
+//        }
+//        this.createdAt = activity.getCreatedAt();
+//    }
 }

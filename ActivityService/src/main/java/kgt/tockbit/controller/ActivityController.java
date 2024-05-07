@@ -88,13 +88,14 @@ public class ActivityController {
     //팔로워 이메일을 보내서, 이메일이 팔로우 한 사람들 가져오기
     @ResponseBody
     @GetMapping("/activity/comm/follower/{email}")
-    public List<UserDto> getFollowed(String follower){
-        return getFollowed(follower);
+    public List<UserDto> getFollowed(@PathVariable("email") String follower){
+        return activityService.getFollowed(follower);
     }
     //팔로우 된 이메일을 보내서, 이메일을 팔로우 한 사람들 가져오기
+    @ResponseBody
     @GetMapping("/activity/comm/follwed/{email}")
-    public List<UserDto> getFollow(String followed){
-        return getFollow(followed);
+    public List<UserDto> getFollow(@PathVariable("email") String followed){
+        return activityService.getFollow(followed);
     }
 
 }
