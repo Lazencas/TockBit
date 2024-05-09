@@ -1,17 +1,21 @@
 package kgt.tockbit.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 
+@Entity
 public class Stock {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal current;
+    private String date;
+
+//    private String stockCode;
+
+//    private BigDecimal current;
     private BigDecimal opening;
     private BigDecimal high;
     private BigDecimal low;
@@ -22,7 +26,7 @@ public class Stock {
     private Long tradeVolumes;
 
     //시가총액
-    private Long capitalization;
+//    private Long capitalization;
 
 
     public Long getId() {
@@ -33,13 +37,14 @@ public class Stock {
         this.id = id;
     }
 
-    public BigDecimal getCurrent() {
-        return current;
+    public String getDate() {
+        return date;
     }
 
-    public void setCurrent(BigDecimal current) {
-        this.current = current;
+    public void setDate(String date) {
+        this.date = date;
     }
+
 
     public BigDecimal getOpening() {
         return opening;
@@ -81,11 +86,4 @@ public class Stock {
         this.tradeVolumes = tradeVolumes;
     }
 
-    public Long getCapitalization() {
-        return capitalization;
-    }
-
-    public void setCapitalization(Long capitalization) {
-        this.capitalization = capitalization;
-    }
 }
