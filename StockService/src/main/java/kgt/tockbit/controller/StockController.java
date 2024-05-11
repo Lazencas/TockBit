@@ -1,12 +1,11 @@
 package kgt.tockbit.controller;
 
-import kgt.tockbit.domain.Stock;
 import kgt.tockbit.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
 
 @RestController
 public class StockController {
@@ -24,10 +23,17 @@ public class StockController {
 //        model.addAttribute("stockData", stockData);
 //        return "stock";
 //   }
-    @GetMapping("/stock/{symbol}")
-    public Flux<Stock> updateStock(@PathVariable("symbol") String symbol){
-        return this.stockService.updateStockData(symbol);
+
+    @PostMapping("/stock/fetch/{market}")
+    public void fetchAndSaveStockData(@PathVariable("market") String market){
+        this.stockService.fetchAllStocks(market);
     }
+
+
+//    @GetMapping("/stock/{symbol}")
+//    public Flux<Stock> updateStock(@PathVariable("symbol") String symbol){
+//        return this.stockService.updateStockData(symbol);
+//    }
 
 
     @GetMapping("/stock/check")
