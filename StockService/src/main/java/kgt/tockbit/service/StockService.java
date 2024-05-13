@@ -1,11 +1,14 @@
 package kgt.tockbit.service;
 
+import kgt.tockbit.domain.Stocks;
 import kgt.tockbit.dto.StockResponse;
 import kgt.tockbit.repository.StocksRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class StockService {
@@ -38,6 +41,20 @@ public class StockService {
 
             page++;
         }
+    }
+
+// 5년치 주식 데이터를 가져와서 데이터베이스에 저장하는 메소드
+    public void fetchAndStoreFiveYearsData(){
+        //데이터베이스에서 모든 주식데이터를 가져옴
+        List<Stocks> stocks = stockRepository.findAll();
+        int l  = 0;
+        //각 주식에 대해 출력해보기
+        for (Stocks stock : stocks){
+            System.out.println(l+"번째 "+stock.getStockName());
+            l++;
+        }
+
+
     }
 
 

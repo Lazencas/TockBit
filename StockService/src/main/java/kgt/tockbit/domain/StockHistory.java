@@ -1,8 +1,6 @@
 package kgt.tockbit.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
@@ -14,17 +12,8 @@ public class StockHistory {
     private Long id;
 
     private String date;
+    private String stockCode;
 
-    @Enumerated(EnumType.STRING)
-    private StockType type;
-
-//    private String stockCode;
-
-//    private BigDecimal current;
-    //종목코드
-    private String itemCode;
-
-    private String stockName;
     private BigDecimal opening;
     private BigDecimal high;
     private BigDecimal low;
@@ -38,28 +27,12 @@ public class StockHistory {
 //    private Long capitalization;
 
 
-    public StockType getType() {
-        return type;
+    public String getStockCode() {
+        return stockCode;
     }
 
-    public void setType(StockType type) {
-        this.type = type;
-    }
-
-    public String getItemCode() {
-        return itemCode;
-    }
-
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
-    }
-
-    public String getStockName() {
-        return stockName;
-    }
-
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
+    public void setStockCode(String stockCode) {
+        this.stockCode = stockCode;
     }
 
     public Long getId() {

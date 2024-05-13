@@ -24,6 +24,7 @@ public class StockController {
 //        return "stock";
 //   }
 
+    //모든 주식데이터 가져와서 db에 저장
     @PostMapping("/stock/fetch/{market}")
     public void fetchAndSaveStockData(@PathVariable("market") String market){
         this.stockService.fetchAllStocks(market);
@@ -41,4 +42,12 @@ public class StockController {
         System.out.println("호출되는지만 체크");
         return "bravo!!";
     }
+
+    //5년치의 일봉데이터 가져와서 db에 저장
+    @GetMapping("/stock/fetch")
+    public void fetch(){
+        stockService.fetchAndStoreFiveYearsData();
+    }
+
+
 }
