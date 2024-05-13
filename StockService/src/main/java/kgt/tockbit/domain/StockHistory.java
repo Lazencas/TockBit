@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.math.BigDecimal;
 
 @Entity
-public class Stock {
+public class StockHistory {
 
     @Id
     private Long id;
