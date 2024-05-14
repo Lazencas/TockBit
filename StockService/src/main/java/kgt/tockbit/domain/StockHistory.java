@@ -1,6 +1,8 @@
 package kgt.tockbit.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
@@ -9,16 +11,17 @@ import java.math.BigDecimal;
 public class StockHistory {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String date;
     private String stockCode;
 
-    private BigDecimal opening;
+    private BigDecimal open;
     private BigDecimal high;
     private BigDecimal low;
     //종가
-    private BigDecimal closePrice;
+    private BigDecimal close;
 
     //거래량
     private Long tradeVolumes;
@@ -52,12 +55,12 @@ public class StockHistory {
     }
 
 
-    public BigDecimal getOpening() {
-        return opening;
+    public BigDecimal getOpen() {
+        return open;
     }
 
-    public void setOpening(BigDecimal opening) {
-        this.opening = opening;
+    public void setOpen(BigDecimal opening) {
+        this.open = opening;
     }
 
     public BigDecimal getHigh() {
@@ -76,12 +79,12 @@ public class StockHistory {
         this.low = low;
     }
 
-    public BigDecimal getClosePrice() {
-        return closePrice;
+    public BigDecimal getClose() {
+        return close;
     }
 
-    public void setClosePrice(BigDecimal previousClose) {
-        this.closePrice = previousClose;
+    public void setClose(BigDecimal previousClose) {
+        this.close = previousClose;
     }
 
     public Long getTradeVolumes() {
