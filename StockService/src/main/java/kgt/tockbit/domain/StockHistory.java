@@ -5,8 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.math.BigDecimal;
-
 @Entity
 public class StockHistory {
 
@@ -14,14 +12,15 @@ public class StockHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String stockName;
     private String date;
     private String stockCode;
 
-    private BigDecimal open;
-    private BigDecimal high;
-    private BigDecimal low;
+    private String open;
+    private String high;
+    private String low;
     //종가
-    private BigDecimal close;
+    private String close;
 
     //거래량
     private Long tradeVolumes;
@@ -29,6 +28,14 @@ public class StockHistory {
     //시가총액
 //    private Long capitalization;
 
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
 
     public String getStockCode() {
         return stockCode;
@@ -54,37 +61,36 @@ public class StockHistory {
         this.date = date;
     }
 
-
-    public BigDecimal getOpen() {
+    public String getOpen() {
         return open;
     }
 
-    public void setOpen(BigDecimal opening) {
-        this.open = opening;
+    public void setOpen(String open) {
+        this.open = open;
     }
 
-    public BigDecimal getHigh() {
+    public String getHigh() {
         return high;
     }
 
-    public void setHigh(BigDecimal high) {
+    public void setHigh(String high) {
         this.high = high;
     }
 
-    public BigDecimal getLow() {
+    public String getLow() {
         return low;
     }
 
-    public void setLow(BigDecimal low) {
+    public void setLow(String low) {
         this.low = low;
     }
 
-    public BigDecimal getClose() {
+    public String getClose() {
         return close;
     }
 
-    public void setClose(BigDecimal previousClose) {
-        this.close = previousClose;
+    public void setClose(String close) {
+        this.close = close;
     }
 
     public Long getTradeVolumes() {
