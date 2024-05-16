@@ -14,13 +14,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -61,63 +65,69 @@ public class StockService {
 
 // 5년치 주식 데이터를 가져와서 데이터베이스에 저장하는 메소드
 public void fetchAndStoreFiveYearsData() {
-    // 데이터베이스에서 모든 주식 데이터를 가져옵니다.
     List<Stocks> stocks = stockRepository.findAll();
-    int l = 0;
 
-    // 각 주식에 대해
-    for (Stocks stock : stocks) {
-        System.out.println(l + "번째 " + stock.getItemCode() + "코드" + stock.getStockName());
-        l++;
+    Flux.fromIterable(stocks)
+            .flatMap(stock -> {
+                String dayfiveYearsDataUrl = "https://fchart.stock.naver.com/sise.nhn?symbol=" + stock.getItemCode() + "&timeframe=day&count=1250&requestType=0";
 
-        // 5년치 일봉 주식 데이터를 가져오는 API의 URL을 생성합니다.
-        String dayfiveYearsDataUrl = "https://fchart.stock.naver.com/sise.nhn?symbol=" + stock.getItemCode() + "&timeframe=day&count=1250&requestType=0";
+                return webClient.get().uri(dayfiveYearsDataUrl)
+                        .retrieve()
+                        .bodyToMono(String.class)
+                        .map(fiveYearsData -> {
+                            NodeList nodeList = null;
+                            try {
+                                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                DocumentBuilder builder = factory.newDocumentBuilder();
+                                InputSource is = new InputSource(new StringReader(fiveYearsData));
+                                Document doc = builder.parse(is);
 
-        // WebClient를 사용하여 API에서 5년치 주식 데이터를 가져옵니다.
-        webClient.get().uri(dayfiveYearsDataUrl)
-                .retrieve()
-                .bodyToMono(String.class)
-                .subscribe(fiveYearsData -> {
-                    NodeList nodeList = null;
-                    // 가져온 데이터는 XML 형식이므로, 이를 파싱하여 필요한 정보를 추출합니다.
-                    try {
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        InputSource is = new InputSource(new StringReader(fiveYearsData));
-                        Document doc = builder.parse(is);
+                                nodeList = doc.getElementsByTagName("item");
+                            } catch (ParserConfigurationException | SAXException | IOException e) {
+                                System.out.println("오류 발생: " + e.getMessage());
+                            }
 
-                        nodeList = doc.getElementsByTagName("item");
-                    } catch (ParserConfigurationException | SAXException | IOException e) {
-                        System.out.println("오류 발생: " + e.getMessage());
-                    }
+                            if (nodeList == null) {
+                                return Collections.<StockHistory>emptyList();
+                            }
 
-                    if (nodeList == null) {
-                        return;
-                    }
+                            List<StockHistory> stockHistories = new ArrayList<>();
+                            for (int i = 0; i < nodeList.getLength(); i++) {
+                                Node node = nodeList.item(i);
+                                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                                    Element element = (Element) node;
+                                    String data = element.getAttribute("data");
+                                    String[] values = data.split("\\|");
 
-                    for (int i = 0; i < nodeList.getLength(); i++) {
-                        Node node = nodeList.item(i);
-                        if (node.getNodeType() == Node.ELEMENT_NODE) {
-                            Element element = (Element) node;
-                            String data = element.getAttribute("data");
-                            String[] values = data.split("\\|");
+                                    StockHistory stockHistory = new StockHistory();
+                                    stockHistory.setStockCode(stock.getItemCode());
+                                    stockHistory.setStockName(stock.getStockName());
+                                    stockHistory.setDate(values[0]);
+                                    stockHistory.setOpen(values[1]);
+                                    stockHistory.setHigh(values[2]);
+                                    stockHistory.setLow(values[3]);
+                                    stockHistory.setClose(values[4]);
+                                    stockHistory.setTradeVolumes(Long.parseLong(values[5]));
 
-                            // 가져온 데이터를 사용하여 StockHistory 객체를 생성하고, 객체의 속성 설정
-                            StockHistory stockHistory = new StockHistory();
-                            stockHistory.setStockCode(stock.getItemCode());
-                            stockHistory.setStockName(stock.getStockName());
-                            stockHistory.setDate(values[0]);
-                            stockHistory.setOpen(values[1]);
-                            stockHistory.setHigh(values[2]);
-                            stockHistory.setLow(values[3]);
-                            stockHistory.setClose(values[4]);
-                            stockHistory.setTradeVolumes(Long.parseLong(values[5]));
+                                    stockHistories.add(stockHistory);
+                                }
+                            }
 
-                            stockHistoryRepository.save(stockHistory);
-                        }
-                    }
-                });
-    }
+                            return stockHistories;
+                        })
+                        .onErrorResume(e -> {
+                            System.out.println("오류 발생: " + e.getMessage());
+                            return Mono.just(Collections.<StockHistory>emptyList());
+                        });
+            })
+            .flatMap(stockHistories -> Flux.fromIterable(stockHistories))
+            .buffer(1000)
+            .flatMap(stockHistories -> {
+                stockHistoryRepository.saveAll(stockHistories);
+                return Mono.empty();
+            })
+            .subscribeOn(Schedulers.boundedElastic())
+            .subscribe();
 }
 
 
