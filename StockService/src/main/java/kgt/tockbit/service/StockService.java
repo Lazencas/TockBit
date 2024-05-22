@@ -192,9 +192,4 @@ public void fetchAndStoreFiveYearsData() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(url, String.class);
     }
-
-
-
-
-
 }
